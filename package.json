@@ -30,6 +30,7 @@
     "copy-webpack-plugin": "^5.0.3",
     "html-webpack-plugin": "^3.2.0",
     "jest": "^24.8.0",
+    "netlify-cms-app": "^2.9.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "ts-jest": "^24.0.2",
@@ -41,8 +42,6 @@
   "dependencies": {
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.14",
-    "netlify-cms-app": "^2.9.6",
-    "react-beautiful-dnd": "^11.0.4",
     "shortid": "^2.2.14"
   }
 }
