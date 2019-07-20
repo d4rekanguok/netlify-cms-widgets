@@ -1,0 +1,48 @@
+{
+  "name": "netlify-cms-widgets",
+  "version": "1.0.0",
+  "description": "A collection of custom widgets for netlify-cms",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "playground:dev": "webpack-dev-server --config ./packages/node_modules/playground/webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d4rekanguok/netlify-cms-widgets.git"
+  },
+  "keywords": [
+    "netlify-cms",
+    "widgets"
+  ],
+  "author": "Derek Nguyen <derek@penandpillow.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/d4rekanguok/netlify-cms-widgets/issues"
+  },
+  "homepage": "https://github.com/d4rekanguok/netlify-cms-widgets#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "@types/lodash": "^4.14.136",
+    "@types/react": "^16.8.23",
+    "@types/react-beautiful-dnd": "^11.0.2",
+    "@types/react-dom": "^16.8.4",
+    "copy-webpack-plugin": "^5.0.3",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.8.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.3",
+    "webpack": "^4.36.1",
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "dependencies": {
+    "immutable": "^4.0.0-rc.12",
+    "lodash": "^4.17.14",
+    "netlify-cms-app": "^2.9.6",
+    "react-beautiful-dnd": "^11.0.4",
+    "shortid": "^2.2.14"
+  }
+}
