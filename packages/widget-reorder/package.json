@@ -20,5 +20,8 @@
   "scripts": {
     "build": "tsc -p ./",
     "prepublishOnly": "tsc -p ./"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

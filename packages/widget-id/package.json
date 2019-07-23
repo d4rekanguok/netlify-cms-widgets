@@ -18,5 +18,8 @@
   "dependencies": {
     "react": "^16.8.6",
     "shortid": "^2.2.14"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
