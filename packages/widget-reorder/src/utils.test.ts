@@ -1,3 +1,6 @@
+import { expect } from 'chai'
+import 'mocha'
+
 import { hasItem, removeOutdatedItem, diff } from './utils'
 
 describe('hasItem', () => {
@@ -6,7 +9,7 @@ describe('hasItem', () => {
     const item = { id: 2 }
 
     const result = hasItem(data, item, 'id')
-    expect(result).toBe(true)
+    expect(result).to.equal(true)
   })
 
   it('should return false if data does not contains item of the same key', () => {
@@ -14,7 +17,7 @@ describe('hasItem', () => {
     const item = { id: 5 }
 
     const result = hasItem(data, item, 'id')
-    expect(result).toBe(false)
+    expect(result).to.equal(false)
   })
 
   it('should return false if data is empty', () => {
@@ -22,7 +25,7 @@ describe('hasItem', () => {
     const item = { id: 5 }
 
     const result = hasItem(data, item, 'id')
-    expect(result).toBe(false)
+    expect(result).to.equal(false)
   })
 })
 
@@ -33,8 +36,8 @@ describe('removeOutdatedItem', () => {
     const outdated = expected.splice(8, 2)
 
     const newData = removeOutdatedItem(data, outdated, 'id')
-    expect(newData).toEqual(expected)
-    expect(newData).not.toBe(data)
+    expect(newData).to.equal(expected)
+    expect(newData).not.to.equal(data)
   })
 })
 
@@ -50,8 +53,8 @@ describe('diff', () => {
       key: 'id',
     })
 
-    expect(result.changed).toBe(true)
-    expect(result.newOrder).toEqual(expected)
+    expect(result.modified).to.equal(true)
+    expect(result.newOrder).to.equal(expected)
   })
 
   it('should return the same array if nothing changed', () => {
@@ -64,8 +67,8 @@ describe('diff', () => {
       key: 'id',
     })
 
-    expect(result.changed).toBe(false)
-    expect(result.newOrder).toBe(currentOrder)
+    expect(result.modified).to.equal(false)
+    expect(result.newOrder).to.equal(currentOrder)
   })
 
   it('should move new data to the very last', () => {
@@ -77,6 +80,6 @@ describe('diff', () => {
       key: 'id',
     })
     const lastItem = newOrder[newOrder.length - 1]
-    expect(lastItem.id).toEqual(4)
+    expect(lastItem.id).to.equal(4)
   })
 })

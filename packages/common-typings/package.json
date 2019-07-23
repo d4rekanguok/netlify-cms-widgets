@@ -1,0 +1,23 @@
+{
+  "name": "@ncwidgets/common-typings",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "Derek Nguyen <derek@penandpillow.com>",
+  "homepage": "https://github.com/d4rekanguok/netlify-cms-widgets/tree/master/packages/common-typings#readme",
+  "license": "MIT",
+  "main": "index.js",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d4rekanguok/netlify-cms-widgets.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/d4rekanguok/netlify-cms-widgets/issues"
+  },
+  "dependencies": {
+    "immutable": "^4.0.0-rc.12"
+  }
+}

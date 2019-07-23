@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { render } from 'react-dom'
 import cms from 'netlify-cms-app'
-import { IdWidget } from 'widget-id'
-import { ReorderWidget } from 'widget-reorder'
-import { FileRelationWidget } from 'widget-file-relation'
+import { IdWidget } from '@ncwidgets/id'
+import { ReorderWidget } from '@ncwidgets/reorder'
+import { FileRelationWidget } from '@ncwidgets/file-relation'
 import './test-data'
 
 const h = React.createElement.bind(React)

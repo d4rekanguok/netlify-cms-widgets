@@ -1,10 +1,14 @@
 {
-  "name": "playground",
+  "name": "@ncwidgets/playground",
   "version": "1.0.0",
   "description": "Playground",
   "main": "index.js",
-  "dependencies": {},
-  "devDependencies": {},
+  "dependencies": {
+    "@ncwidgets/file-relation": "^1.0.0",
+    "@ncwidgets/id": "^1.0.0",
+    "@ncwidgets/reorder": "^1.0.0"
+  },
+  "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

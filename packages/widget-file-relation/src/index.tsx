@@ -2,7 +2,7 @@ import * as React from 'react'
 import Select from 'react-select'
 import { fromJS } from 'immutable'
 import { reactSelectStyles } from 'netlify-cms-ui-default/dist/esm/styles'
-import { WidgetProps } from 'types'
+import { WidgetProps } from '@ncwidgets/common-typings'
 
 type Option = Record<'label' | 'value', string>
 

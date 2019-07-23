@@ -1,5 +1,5 @@
 {
-  "name": "widget-id",
+  "name": "@ncwidgets/id",
   "version": "1.0.0",
   "description": "Netlify custom widget id",
   "main": "./dist/index.js",
@@ -8,6 +8,16 @@
   "license": "MIT",
   "repository": "https://github.com/d4rekanguok/netlify-cms-widgets",
   "peerDependencies": {
-    "react": "^16.8.6"
+    "react": "^16.8.6",
+    "shortid": "^2.2.14"
+  },
+  "devDependencies": {
+    "@ncwidgets/common-typings": "^1.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p ./"
+  },
+  "dependencies": {
+    "immutable": "^4.0.0-rc.12"
   }
 }

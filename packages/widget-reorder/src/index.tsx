@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import { WidgetProps } from 'types'
 import { fromJS } from 'immutable'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import { WidgetProps } from '@ncwidgets/common-typings'
 
 import { reorder, diff, extract } from './utils'
 

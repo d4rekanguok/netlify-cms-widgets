@@ -1,4 +1,5 @@
 .DS_Store
-node_modules
-!packages/node_modules
-dist
+node_modules/
+packages/*/dist
+lerna-debug.log
+npm-debug.log

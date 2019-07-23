@@ -1,5 +1,5 @@
 {
-  "name": "widget-file-relation",
+  "name": "@ncwidgets/file-relation",
   "version": "1.0.0",
   "description": "Netlify custom widget file relation",
   "main": "./dist/index.js",
@@ -11,10 +11,15 @@
     "react": "^16.8.6"
   },
   "dependencies": {
+    "immutable": "^4.0.0-rc.12",
     "netlify-cms-ui-default": "^2.6.3",
     "react-select": "^3.0.4"
   },
   "devDependencies": {
+    "@ncwidgets/common-typings": "^1.0.0",
     "@types/react-select": "^3.0.0"
+  },
+  "scripts": {
+    "build": "tsc -p ./"
   }
 }

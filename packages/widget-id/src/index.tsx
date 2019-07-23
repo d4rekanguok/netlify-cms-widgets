@@ -1,6 +1,6 @@
 import * as React from 'react'
 import shortid from 'shortid'
-import { WidgetProps } from 'types'
+import { WidgetProps } from '@ncwidgets/common-typings'
 
 export class IdWidget extends React.Component<WidgetProps> {
   public state = {
