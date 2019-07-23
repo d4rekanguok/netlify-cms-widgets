@@ -10,16 +10,15 @@
   "dependencies": {
     "immutable": "^4.0.0-rc.12",
     "lodash": "^4.17.15",
+    "react": "^16.8.6",
     "react-beautiful-dnd": "^11.0.4"
   },
   "peerDependencies": {
-    "immutable": "^4.0.0-rc.12",
-    "react": "^16.8.6"
-  },
-  "devDependencies": {
-    "@ncwidgets/common-typings": "^1.0.0"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "scripts": {
-    "build": "tsc -p ./"
+    "build": "tsc -p ./",
+    "prepublishOnly": "tsc -p ./"
   }
 }

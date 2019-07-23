@@ -1,6 +1,3 @@
-import { expect } from 'chai'
-import 'mocha'
-
 import { hasItem, removeOutdatedItem, diff } from './utils'
 
 describe('hasItem', () => {
@@ -9,7 +6,7 @@ describe('hasItem', () => {
     const item = { id: 2 }
 
     const result = hasItem(data, item, 'id')
-    expect(result).to.equal(true)
+    expect(result).toBe(true)
   })
 
   it('should return false if data does not contains item of the same key', () => {
@@ -17,7 +14,7 @@ describe('hasItem', () => {
     const item = { id: 5 }
 
     const result = hasItem(data, item, 'id')
-    expect(result).to.equal(false)
+    expect(result).toBe(false)
   })
 
   it('should return false if data is empty', () => {
@@ -25,7 +22,7 @@ describe('hasItem', () => {
     const item = { id: 5 }
 
     const result = hasItem(data, item, 'id')
-    expect(result).to.equal(false)
+    expect(result).toBe(false)
   })
 })
 
@@ -36,8 +33,8 @@ describe('removeOutdatedItem', () => {
     const outdated = expected.splice(8, 2)
 
     const newData = removeOutdatedItem(data, outdated, 'id')
-    expect(newData).to.equal(expected)
-    expect(newData).not.to.equal(data)
+    expect(newData).toEqual(expected)
+    expect(newData).not.toEqual(data)
   })
 })
 
@@ -53,8 +50,8 @@ describe('diff', () => {
       key: 'id',
     })
 
-    expect(result.modified).to.equal(true)
-    expect(result.newOrder).to.equal(expected)
+    expect(result.modified).toBe(true)
+    expect(result.newOrder).toEqual(expected)
   })
 
   it('should return the same array if nothing changed', () => {
@@ -67,8 +64,8 @@ describe('diff', () => {
       key: 'id',
     })
 
-    expect(result.modified).to.equal(false)
-    expect(result.newOrder).to.equal(currentOrder)
+    expect(result.modified).toBe(false)
+    expect(result.newOrder).toEqual(currentOrder)
   })
 
   it('should move new data to the very last', () => {
@@ -80,6 +77,6 @@ describe('diff', () => {
       key: 'id',
     })
     const lastItem = newOrder[newOrder.length - 1]
-    expect(lastItem.id).to.equal(4)
+    expect(lastItem.id).toBe(4)
   })
 })

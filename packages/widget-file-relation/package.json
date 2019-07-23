@@ -8,18 +8,17 @@
   "license": "MIT",
   "repository": "https://github.com/d4rekanguok/netlify-cms-widgets",
   "peerDependencies": {
-    "react": "^16.8.6"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
   },
   "dependencies": {
     "immutable": "^4.0.0-rc.12",
     "netlify-cms-ui-default": "^2.6.3",
+    "react": "^16.8.6",
     "react-select": "^3.0.4"
   },
-  "devDependencies": {
-    "@ncwidgets/common-typings": "^1.0.0",
-    "@types/react-select": "^3.0.0"
-  },
   "scripts": {
-    "build": "tsc -p ./"
+    "build": "tsc -p ./",
+    "prepublishOnly": "tsc -p ./"
   }
 }

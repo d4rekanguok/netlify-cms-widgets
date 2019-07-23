@@ -4,7 +4,9 @@
   "description": "A collection of custom widgets for netlify-cms",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register packages/**/*.test.ts",
+    "test": "jest",
+    "bootstrap": "lerna bootstrap",
+    "build": "lerna run build",
     "playground:dev": "webpack-dev-server --config ./packages/playground/webpack.config.js"
   },
   "repository": {
@@ -22,27 +24,30 @@
   },
   "homepage": "https://github.com/d4rekanguok/netlify-cms-widgets#readme",
   "devDependencies": {
-    "@types/chai": "^4.1.7",
+    "@ncwidgets/common-typings": "file:../common-typings",
+    "@types/jest": "^24.0.15",
     "@types/lodash": "^4.14.136",
-    "@types/mocha": "^5.2.7",
     "@types/react": "^16.8.23",
     "@types/react-beautiful-dnd": "^11.0.2",
     "@types/react-dom": "^16.8.4",
-    "chai": "^4.2.0",
+    "@types/react-select": "^3.0.0",
     "copy-webpack-plugin": "^5.0.3",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.8.0",
     "lerna": "^3.15.0",
-    "mocha": "^6.2.0",
-    "netlify-cms-app": "^2.9.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "ts-node": "^8.3.0",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.5.3",
     "webpack": "^4.36.1",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
-    "lodash": "^4.17.14"
+    "@ncwidgets/common-typings": "file:packages/common-typings",
+    "@ncwidgets/file-relation": "file:packages/widget-file-relation",
+    "@ncwidgets/id": "file:packages/widget-id",
+    "@ncwidgets/playground": "file:packages/playground",
+    "@ncwidgets/reorder": "file:packages/widget-reorder"
   }
 }

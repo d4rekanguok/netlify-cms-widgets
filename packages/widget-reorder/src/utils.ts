@@ -1,4 +1,4 @@
-import differenceBy from 'lodash/differenceBy'
+import differenceBy = require('lodash/differenceBy')
 
 export const extract = <T, K extends keyof T>(object: T, ...keys: K[]): Pick<T, K> =>
   keys.reduce((result, key) => {

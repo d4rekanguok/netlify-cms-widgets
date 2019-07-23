@@ -18,6 +18,7 @@
     "url": "https://github.com/d4rekanguok/netlify-cms-widgets/issues"
   },
   "dependencies": {
+    "@types/react": "^16.8.23",
     "immutable": "^4.0.0-rc.12"
   }
 }

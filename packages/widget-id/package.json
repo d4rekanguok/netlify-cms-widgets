@@ -9,15 +9,14 @@
   "repository": "https://github.com/d4rekanguok/netlify-cms-widgets",
   "peerDependencies": {
     "react": "^16.8.6",
-    "shortid": "^2.2.14"
-  },
-  "devDependencies": {
-    "@ncwidgets/common-typings": "^1.0.0"
+    "react-dom": "^16.8.6"
   },
   "scripts": {
-    "build": "tsc -p ./"
+    "build": "tsc -p ./",
+    "prepublishOnly": "tsc -p ./"
   },
   "dependencies": {
-    "immutable": "^4.0.0-rc.12"
+    "react": "^16.8.6",
+    "shortid": "^2.2.14"
   }
 }
