@@ -3,9 +3,11 @@
     "packages/*"
   ],
   "publish": {
-    "ignoreChanges": ["*.md"],
+    "ignoreChanges": [
+      "*.md"
+    ],
     "message": "chore(release): publish"
   },
   "npmClient": "yarn",
-  "version": "0.0.0"
+  "version": "0.1.0"
 }

@@ -1,6 +1,6 @@
 {
   "name": "@ncwidgets/playground",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Playground",
   "main": "index.js",
   "dependencies": {
