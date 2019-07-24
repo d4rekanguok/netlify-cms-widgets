@@ -6,10 +6,6 @@ export const extract = <T, K extends keyof T>(object: T, ...keys: K[]): Pick<T, 
     return result
   }, {} as Pick<T, K>)
 
-export const hasItem = <T>(data: T[], item: T, key: keyof T): boolean => {
-  return data.some(datum => datum[key] === item[key])
-}
-
 export const removeOutdatedItem = <T>(
   data: T[],
   outdated: T[],

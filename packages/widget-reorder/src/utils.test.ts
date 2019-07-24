@@ -1,30 +1,4 @@
-import { hasItem, removeOutdatedItem, diff } from './utils'
-
-describe('hasItem', () => {
-  it('should return true if data contains item of the same key', () => {
-    const data = [{ id: 2 }, { id: 3 }]
-    const item = { id: 2 }
-
-    const result = hasItem(data, item, 'id')
-    expect(result).toBe(true)
-  })
-
-  it('should return false if data does not contains item of the same key', () => {
-    const data = [{ id: 2 }, { id: 3 }]
-    const item = { id: 5 }
-
-    const result = hasItem(data, item, 'id')
-    expect(result).toBe(false)
-  })
-
-  it('should return false if data is empty', () => {
-    const data = []
-    const item = { id: 5 }
-
-    const result = hasItem(data, item, 'id')
-    expect(result).toBe(false)
-  })
-})
+import { removeOutdatedItem, diff } from './utils'
 
 describe('removeOutdatedItem', () => {
   it('should remove outdated items', () => {
