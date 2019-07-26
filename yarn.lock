@@ -1214,44 +1214,6 @@
     call-me-maybe "^1.0.1"
     glob-to-regexp "^0.3.0"
 
-"@ncwidgets/common-typings@file:packages/common-typings":
-  version "1.0.0"
-  dependencies:
-    "@types/react" "^16.8.23"
-    immutable "^4.0.0-rc.12"
-
-"@ncwidgets/file-relation@file:packages/widget-file-relation":
-  version "1.0.0"
-  dependencies:
-    immutable "^4.0.0-rc.12"
-    netlify-cms-ui-default "^2.6.3"
-    react "^16.8.6"
-    react-select "^3.0.4"
-
-"@ncwidgets/id@file:packages/widget-id":
-  version "1.0.0"
-  dependencies:
-    react "^16.8.6"
-    shortid "^2.2.14"
-
-"@ncwidgets/playground@file:packages/playground":
-  version "1.0.0"
-  dependencies:
-    "@ncwidgets/file-relation" "file:../../../../../Library/Caches/Yarn/v4/npm-@ncwidgets-playground-1.0.0-28faddda-08a1-4f4a-838f-4f9e32e2614a-1563899137352/node_modules/@ncwidgets/widget-file-relation"
-    "@ncwidgets/id" "file:../../../../../Library/Caches/Yarn/v4/npm-@ncwidgets-playground-1.0.0-28faddda-08a1-4f4a-838f-4f9e32e2614a-1563899137352/node_modules/@ncwidgets/widget-id"
-    "@ncwidgets/reorder" "file:../../../../../Library/Caches/Yarn/v4/npm-@ncwidgets-playground-1.0.0-28faddda-08a1-4f4a-838f-4f9e32e2614a-1563899137352/node_modules/@ncwidgets/widget-reorder"
-    netlify-cms-app "^2.9.6"
-    react "^16.8.6"
-    react-dom "^16.8.6"
-
-"@ncwidgets/reorder@file:packages/widget-reorder":
-  version "1.0.0"
-  dependencies:
-    immutable "^4.0.0-rc.12"
-    lodash "^4.17.15"
-    react "^16.8.6"
-    react-beautiful-dnd "^11.0.4"
-
 "@nodelib/fs.stat@^1.1.2":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"

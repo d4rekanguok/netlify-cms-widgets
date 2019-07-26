@@ -5,7 +5,7 @@ import { WidgetProps } from '@ncwidgets/common-typings'
 
 import { reorder, diff, extract } from './utils'
 
-export class ReorderWidget extends React.Component<WidgetProps> {
+export class Control extends React.Component<WidgetProps> {
   public state = {
     data: [],
   }
@@ -14,8 +14,8 @@ export class ReorderWidget extends React.Component<WidgetProps> {
     const { query, forID, value, field, onChange } = this.props
 
     const collection: string = field.get('collection')
-    const fieldId: string = field.get('field_id')
-    const fieldDisplay: string[] = field.get('field_display')
+    const fieldId: string = field.get('id_field')
+    const fieldDisplay: string[] = field.get('display_fields')
 
     // @ts-ignore
     const fieldsToBeExtracted = Array.from(new Set([fieldId, ...fieldDisplay.toJS()]))
@@ -25,8 +25,8 @@ export class ReorderWidget extends React.Component<WidgetProps> {
       return extract(payload.data, ...fieldsToBeExtracted)
     })
 
-    if (!value) {
-      onChange(data)
+    if (!value || !value.toJS) {
+      onChange(fromJS(data))
       this.setState({ data })
       return
     }
@@ -64,8 +64,8 @@ export class ReorderWidget extends React.Component<WidgetProps> {
     const { field } = this.props
     const { data } = this.state
 
-    const fieldId: string = field.get('field_id')
-    const fieldDisplay: string[] = field.get('field_display')
+    const fieldId: string = field.get('id_field')
+    const fieldDisplay: string[] = field.get('display_fields')
 
     if (data.length === 0) return <div>loading...</div>
     return (

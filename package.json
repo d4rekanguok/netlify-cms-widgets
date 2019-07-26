@@ -5,10 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "bootstrap": "lerna bootstrap",
+    "bootstrap": "lerna bootstrap --use-workspaces",
     "build": "lerna run build",
-    "playground:dev": "webpack-dev-server --config ./packages/playground/webpack.config.js"
+    "playground:dev": "webpack-dev-server --config ./packages/playground/webpack.config.js",
+    "playground:build": "webpack --config ./packages/playground/webpack.config.js"
   },
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/d4rekanguok/netlify-cms-widgets.git"
@@ -24,7 +26,6 @@
   },
   "homepage": "https://github.com/d4rekanguok/netlify-cms-widgets#readme",
   "devDependencies": {
-    "@ncwidgets/common-typings": "file:../common-typings",
     "@types/jest": "^24.0.15",
     "@types/lodash": "^4.14.136",
     "@types/react": "^16.8.23",
@@ -43,11 +44,7 @@
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2"
   },
-  "dependencies": {
-    "@ncwidgets/common-typings": "file:packages/common-typings",
-    "@ncwidgets/file-relation": "file:packages/widget-file-relation",
-    "@ncwidgets/id": "file:packages/widget-id",
-    "@ncwidgets/playground": "file:packages/playground",
-    "@ncwidgets/reorder": "file:packages/widget-reorder"
-  }
+  "workspaces": [
+    "packages/*"
+  ]
 }

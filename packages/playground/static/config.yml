@@ -16,18 +16,18 @@ collections:
 
       - label: ID
         name: id
-        widget: custom-id
+        widget: ncw-id
         prefix: post
         hint: This widget generate an unique read-only id
 
       - label: Categories
         name: cats
-        widget: custom-file-relation
+        widget: ncw-file-relation
         collection: setting
         file: cats
-        field_name: cats
-        field_id: id
-        field_display: name
+        target_field: cats
+        id_field: id
+        display_fields: name
         multiple: true
 
   - label: Pages
@@ -43,14 +43,10 @@ collections:
 
           - label: Featured Posts
             name: featured
-            # widget: relation
-            # searchFields: [title]
-            # valueField: title
-            # collection: posts
-            widget: custom-reorder
+            widget: ncw-reorder
             collection: posts
-            field_id: id
-            field_display: ['title']
+            id_field: id
+            display_fields: ['title']
 
   - label: Setting
     name: setting
@@ -74,5 +70,5 @@ collections:
 
               - label: ID
                 name: id
-                widget: custom-id
+                widget: ncw-id
                 prefix: cats

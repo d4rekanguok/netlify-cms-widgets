@@ -10,7 +10,7 @@ interface WidgetState {
   options: Option[];
 }
 
-export class FileRelationWidget extends React.Component<WidgetProps, WidgetState> {
+export class Control extends React.Component<WidgetProps, WidgetState> {
   public state: WidgetState = {
     options: [],
   }
@@ -20,9 +20,9 @@ export class FileRelationWidget extends React.Component<WidgetProps, WidgetState
     
     const collection = field.get('collection')
     const file = field.get('file')
-    const fieldName = field.get('field_name')
-    const fieldId = field.get('field_id')
-    const fieldDisplay: string = field.get('field_display') || fieldId
+    const fieldName = field.get('target_field')
+    const fieldId = field.get('id_field')
+    const fieldDisplay: string = field.get('display_fields') || fieldId
   
     const results = await loadEntry(collection, file)
     const data = results.payload.entry.data[fieldName]

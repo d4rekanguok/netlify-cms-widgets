@@ -1,36 +1,37 @@
 import React, { useEffect, useState } from 'react'
 import { render } from 'react-dom'
 import cms from 'netlify-cms-app'
-import { IdWidget } from '@ncwidgets/id'
-import { ReorderWidget } from '@ncwidgets/reorder'
-import { FileRelationWidget } from '@ncwidgets/file-relation'
-import './test-data'
+import { Widget as IdWidget } from '@ncwidgets/id'
+import { Widget as ReorderWidget } from '@ncwidgets/reorder'
+import { Widget as FileRelationWidget } from '@ncwidgets/file-relation'
 
 const h = React.createElement.bind(React)
 
+const loadData = async (dataPath) => {
+  const data = await fetch(dataPath)
+    .then(data => data.json())
+    .catch(err => console.error(err))
+
+  window.repoFiles = data
+}
+
+const createRoot = () => {
+  const $root = document.createElement('div')
+  document.body.appendChild($root)
+  return $root
+}
+
 const CMS = () => {
   useEffect(() => {
-    cms.registerWidget({
-      name: 'custom-id',
-      controlComponent: IdWidget,
-    })
-    
-    cms.registerWidget({
-      name: 'custom-reorder',
-      controlComponent: ReorderWidget,
-    })
-
-    cms.registerWidget({
-      name: 'custom-file-relation',
-      controlComponent: FileRelationWidget,
-    })
-    
+    loadData('./data.json')
+    cms.registerWidget(IdWidget)
+    cms.registerWidget(ReorderWidget)
+    cms.registerWidget(FileRelationWidget)
+    cms.registerPreviewStyle('./preview.css')
     cms.init()
   });
 
   return h('div', { id: 'nc-root' })
 };
 
-const $root = document.createElement('div')
-document.body.appendChild($root)
-render(h(CMS), $root)
+render(h(CMS), createRoot())
