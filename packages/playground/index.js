@@ -29,9 +29,9 @@ const CMS = () => {
     cms.registerWidget(FileRelationWidget)
     cms.registerPreviewStyle('./preview.css')
     cms.init()
-  });
+  })
 
   return h('div', { id: 'nc-root' })
-};
+}
 
 render(h(CMS), createRoot())

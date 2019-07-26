@@ -1,6 +1,6 @@
 import * as React from 'react'
 import Select from 'react-select'
-import { fromJS } from 'immutable'
+import { fromJS, Set } from 'immutable'
 import { reactSelectStyles } from 'netlify-cms-ui-default/dist/esm/styles'
 import { WidgetProps } from '@ncwidgets/common-typings'
 
@@ -42,6 +42,20 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
     onChange(fromJS(value))
   }
 
+  public getSelectedValue = (
+    value: null | string | Set<Option>, 
+    options: Option[]
+  ): Option[] => {
+    let selected: Option[] = []
+    if (!value) return selected
+    else if (typeof value === 'string') {
+      const maybeOption = options.find(option => option.value === value)
+      selected = maybeOption ? [maybeOption] : []
+    }
+    else selected = value.toJS()
+    return selected
+  }
+
   public render() {
     const {
       field,
@@ -52,16 +66,10 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
       setInactiveStyle,
     } = this.props
     const { options } = this.state
+    const selected = this.getSelectedValue(value, options)
 
     const isMultiple: boolean = field.get('multiple')
-
-    let selected: Option[]
-    if (!value) selected = []
-    else if (typeof value === 'string') {
-      const maybeSelect = options.find(option => option.value === value)
-      selected = maybeSelect ? [maybeSelect] : []
-    }
-    else selected = value.toJS()
+    const placeholder: string = field.get('placeholder') || 'select...'
 
     return (
       <div>
@@ -77,7 +85,7 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
           isClearable={false}
           value={selected}
           options={options}
-          placeholder="select..."
+          placeholder={placeholder}
         />
       </div>
     )
