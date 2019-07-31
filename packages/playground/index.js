@@ -5,8 +5,6 @@ import { Widget as IdWidget } from '@ncwidgets/id'
 import { Widget as ReorderWidget } from '@ncwidgets/reorder'
 import { Widget as FileRelationWidget } from '@ncwidgets/file-relation'
 
-const h = React.createElement.bind(React)
-
 const loadData = async (dataPath) => {
   const data = await fetch(dataPath)
     .then(data => data.json())
@@ -31,7 +29,7 @@ const CMS = () => {
     cms.init()
   })
 
-  return h('div', { id: 'nc-root' })
+  return <div id="nc-root"></div>
 }
 
-render(h(CMS), createRoot())
+render(<CMS />, createRoot())
