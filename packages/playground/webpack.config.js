@@ -12,6 +12,24 @@ module.exports = {
     filename: 'bundle.js',
   },
   devtool: 'eval-source-map',
+  module: {
+    rules: [
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'babel-loader',
+          options: {
+            sourceType: 'module',
+            presets: [
+              ['@babel/preset-env', { targets: { esmodules: true }}], 
+              '@babel/preset-react'
+            ],
+          }
+        }
+      }
+    ],
+  },
   plugins: [
     new HtmlPlugin(),
     new CopyPlugin([{
