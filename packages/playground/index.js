@@ -25,9 +25,13 @@ const CMS = () => {
     loadData('./data.json')
 
     const ListComponent = ({ item }) =>
-      h('div', null, h('h5', null, item.title))
+      <Fragment>
+        <strong>{item.title}</strong>
+        <p>{item.id}</p>
+      </Fragment>
+
     const previewComponent = ({ value }) => 
-      h('div', null, value.map((item, i) => h('p', { key: `item.title${i}`}, item.get('title'))))
+      value.map((item, i) => <p key={i}>{item.get('title')}</p>)
 
     const ReorderWidget = createReorderWidget({ ListComponent, previewComponent })
 

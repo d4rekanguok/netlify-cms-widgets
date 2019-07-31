@@ -46,7 +46,7 @@ collections:
             widget: ncw-reorder
             collection: posts
             id_field: id
-            display_fields: ['title']
+            display_fields: ['title', 'id']
 
   - label: Setting
     name: setting
