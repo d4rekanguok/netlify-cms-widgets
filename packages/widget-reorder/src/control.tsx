@@ -1,11 +1,11 @@
-import * as React from 'react'
+import React, { FunctionComponent as FC } from 'react'
 import { fromJS } from 'immutable'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
 
 import { reorder, diff, extract } from './utils'
 
-export const createWidgetControl = (ListElement?) => {
+export const createControl = (ListElement: FC<{item: object}>) => {
   return class extends React.Component<WidgetProps> {
     public state = {
       data: [],
@@ -64,7 +64,7 @@ export const createWidgetControl = (ListElement?) => {
     public render() {
       const { field } = this.props
       const { data } = this.state
-
+  
       const fieldId: string = field.get('id_field')
       const fieldDisplay: string[] = field.get('display_fields')
 
@@ -100,12 +100,11 @@ export const createWidgetControl = (ListElement?) => {
                           background: '#fff',
                           borderRadius: '3px',
                           marginBottom: '0.5rem',
-                          ...provided.draggableProps.style
+                          ...provided.draggableProps.style,
                         }}
                       >
-                        {ListElement && <ListElement item={item}/>}
-                        {!ListElement && fieldDisplay.map(fieldName => item[fieldName]).join(' ')}
-                      </div>
+                      <ListElement item={extract(item, ...fieldDisplay)}/> 
+                    </div>
                     )}
                   </Draggable>
                 ))}
@@ -119,4 +118,6 @@ export const createWidgetControl = (ListElement?) => {
   }
 }
 
-export const Control = createWidgetControl()
+export const Control = createControl(({ item }) => 
+  <div>{Object.keys(item).map(key => item[key]).join(' ')}</div>
+  )

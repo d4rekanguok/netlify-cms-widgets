@@ -1,4 +1,4 @@
-import { Control, createWidgetControl } from './control'
+import { Control, createControl } from './control'
 import { Preview } from './preview'
 
 const Widget = {
@@ -8,10 +8,13 @@ const Widget = {
 }
 
 export const createWidget = (options) => {
+    const { previewComponent = Preview } = options
+    
     return {
-      name: 'ncw-reorder',
-      controlComponent: createWidgetControl(options.controlItem),
-      previewComponent: Preview
+      ...Widget,
+      name: options.name ? options.name : Widget.name,
+      controlComponent: createControl(options.ListComponent),
+      previewComponent
     }
 }
 

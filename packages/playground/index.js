@@ -26,9 +26,12 @@ const CMS = () => {
   useEffect(() => {
     loadData('./data.json')
 
-    const ReorderWidget = createReorderWidget({
-      controlItem: ({ item }) => h('div', null, h('h5', null, item.title), h('p', null, item.id))
-    })
+    const ListComponent = ({ item }) =>
+      h('div', null, h('h5', null, item.title))
+    const previewComponent = ({ value }) => 
+      h('div', null, value.map((item, i) => h('p', { key: `item.title${i}`}, item.get('title'))))
+
+    const ReorderWidget = createReorderWidget({ ListComponent, previewComponent })
 
     cms.registerWidget(IdWidget)
     cms.registerWidget(ReorderWidget)
