@@ -46,7 +46,7 @@ export class Control extends React.Component<WidgetProps> {
         type="text"
         className={classNameWrapper}
         style={{
-          color: "#cdcdcd",
+          color: '#cdcdcd',
         }}
         value={value || id}
         // value={value}
