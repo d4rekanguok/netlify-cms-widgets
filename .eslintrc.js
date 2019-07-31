@@ -3,11 +3,17 @@ module.exports = {
     browser: true,
     es6: true,
   },
+  settings: {
+    react: {
+      version: "detect",
+    }
+  },
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   extends: [
-    "plugin:jest/recommended", 
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:jest/recommended",
   ],
   globals: {
     Atomics: "readonly",
@@ -21,8 +27,11 @@ module.exports = {
     semi: [1, "never"],
     quotes: [1, "single"],
     indent: "off",
+    "react/prop-types": 0,
     "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-object-literal-type-assertion": "off",
+    "@typescript-eslint/no-var-requires": "off",
   }
 }

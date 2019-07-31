@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { render } from 'react-dom'
 import cms from 'netlify-cms-app'
 import { Widget as IdWidget } from '@ncwidgets/id'
