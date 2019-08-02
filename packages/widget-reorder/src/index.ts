@@ -1,5 +1,7 @@
-import { Control, createControl } from './control'
+import { createControl } from './control'
 import { Preview } from './preview'
+
+const Control = createControl()
 
 const Widget = {
   name: 'ncw-reorder',
@@ -7,19 +9,9 @@ const Widget = {
   previewComponent: Preview,
 }
 
-export const createWidget = (options) => {
-    const { previewComponent = Preview } = options
-    
-    return {
-      ...Widget,
-      name: options.name ? options.name : Widget.name,
-      controlComponent: createControl(options.ListComponent),
-      previewComponent
-    }
-}
-
 export {
   Widget,
   Control,
   Preview,
+  createControl,
 }

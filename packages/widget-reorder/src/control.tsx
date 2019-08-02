@@ -1,12 +1,23 @@
-import React, { FunctionComponent as FC } from 'react'
-import { fromJS } from 'immutable'
+import * as React from 'react'
+import { fromJS, List } from 'immutable'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
 
 import { reorder, diff, extract } from './utils'
 
-export const createControl = (ListElement: FC<{item: object}>) => {
-  return class extends React.Component<WidgetProps> {
+const defaultListItem = item => Object.values(item).join(' ')
+
+export interface CreateControlOptions {
+  renderListItem?: (item: object) => React.ComponentType<{ item: Record<string, any> }>;
+}
+
+type CreateControl = (options?: CreateControlOptions) => React.ComponentClass<WidgetProps>
+
+export const createControl: CreateControl = (options = {}) => {
+  const renderListItem = options.renderListItem || defaultListItem
+  
+  return class Control extends React.Component<WidgetProps> {
+
     public state = {
       data: [],
     }
@@ -16,9 +27,7 @@ export const createControl = (ListElement: FC<{item: object}>) => {
 
       const collection: string = field.get('collection')
       const fieldId: string = field.get('id_field')
-      const fieldDisplay: string[] = field.get('display_fields')
-
-      // @ts-ignore
+      const fieldDisplay: List<string> = field.get('display_fields')
       const fieldsToBeExtracted = Array.from(new Set([fieldId, ...fieldDisplay.toJS()]))
 
       const result = await query(forID, collection, [fieldId], '')
@@ -66,7 +75,6 @@ export const createControl = (ListElement: FC<{item: object}>) => {
       const { data } = this.state
   
       const fieldId: string = field.get('id_field')
-      const fieldDisplay: string[] = field.get('display_fields')
 
       if (data.length === 0) return <div>loading...</div>
       return (
@@ -103,8 +111,8 @@ export const createControl = (ListElement: FC<{item: object}>) => {
                           ...provided.draggableProps.style,
                         }}
                       >
-                      <ListElement item={extract(item, ...fieldDisplay)}/> 
-                    </div>
+                        {renderListItem(item)}
+                      </div>
                     )}
                   </Draggable>
                 ))}
@@ -117,7 +125,3 @@ export const createControl = (ListElement: FC<{item: object}>) => {
     }
   }
 }
-
-export const Control = createControl(({ item }) => 
-  <div>{Object.keys(item).map(key => item[key]).join(' ')}</div>
-  )

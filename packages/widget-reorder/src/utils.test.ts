@@ -1,4 +1,4 @@
-import { removeOutdatedItem, diff } from './utils'
+import { removeOutdatedItem, diff, extract } from './utils'
 
 describe('removeOutdatedItem', () => {
   it('should remove outdated items', () => {
@@ -52,5 +52,22 @@ describe('diff', () => {
     })
     const lastItem = newOrder[newOrder.length - 1]
     expect(lastItem.id).toBe(4)
+  })
+})
+
+describe('extract', () => {
+  it('should create a new shallow object with specified keys', () => {
+    const data = {
+      a: 100,
+      b: 200,
+      c: 300,
+    }
+    const expected = {
+      a: data.a,
+      b: data.b,
+    }
+    const result = extract(data, 'a', 'b')
+
+    expect(result).toEqual(expected)
   })
 })

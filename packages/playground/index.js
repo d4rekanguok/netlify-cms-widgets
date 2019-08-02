@@ -1,10 +1,9 @@
-import React, { useEffect, useState, Fragment } from 'react'
+import React, { useEffect } from 'react'
 import { render } from 'react-dom'
 import cms from 'netlify-cms-app'
 import { Widget as IdWidget } from '@ncwidgets/id'
-// import { Widget as ReorderWidget } from '@ncwidgets/reorder'
+import { Widget as ReorderWidget, createControl } from '@ncwidgets/reorder'
 import { Widget as FileRelationWidget } from '@ncwidgets/file-relation'
-import { createWidget as createReorderWidget } from '@ncwidgets/reorder'
 
 const loadData = async (dataPath) => {
   const data = await fetch(dataPath)
@@ -20,27 +19,40 @@ const createRoot = () => {
   return $root
 }
 
+const ListComponent = ({ item }) => (
+  <>
+    <strong>{item.title}</strong>
+    <p style={{ margin: 0, color: '#798291', fontSize: '0.8rem' }}>{item.id}</p>
+  </>
+)
+
+const CustomReorderPreview = ({ value }) => (
+  <section>
+    <hr />
+    <p>Custom Widget Preview</p>
+    {value.map((item, i) => <p key={i}>{item.get('title')}</p>)}
+  </section>
+)
+
+const CustomReorderControl = createControl({
+  renderListItem: item => <ListComponent item={item} />
+})
+
 const CMS = () => {
   useEffect(() => {
     loadData('./data.json')
 
-    const ListComponent = ({ item }) =>
-      <Fragment>
-        <strong>{item.title}</strong>
-        <p>{item.id}</p>
-      </Fragment>
-
-    const previewComponent = ({ value }) => 
-      value.map((item, i) => <p key={i}>{item.get('title')}</p>)
-
-    const ReorderWidget = createReorderWidget({ ListComponent, previewComponent })
-
     cms.registerWidget(IdWidget)
     cms.registerWidget(ReorderWidget)
+    cms.registerWidget({
+      name: 'custom-reorder',
+      controlComponent: CustomReorderControl,
+      previewComponent: CustomReorderPreview,
+    })
     cms.registerWidget(FileRelationWidget)
     cms.registerPreviewStyle('./preview.css')
     cms.init()
-  })
+  }, [])
 
   return <div id="nc-root"></div>
 }
