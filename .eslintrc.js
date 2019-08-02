@@ -28,6 +28,7 @@ module.exports = {
     quotes: [1, "single"],
     indent: "off",
     "react/prop-types": 0,
+    "react/display-name": 0,
     "@typescript-eslint/indent": ["error", 2],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "off",

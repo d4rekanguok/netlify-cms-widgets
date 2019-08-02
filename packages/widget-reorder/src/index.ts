@@ -1,5 +1,7 @@
-import { Control } from './control'
+import { createControl } from './control'
 import { Preview } from './preview'
+
+const Control = createControl()
 
 const Widget = {
   name: 'ncw-reorder',
@@ -11,4 +13,5 @@ export {
   Widget,
   Control,
   Preview,
+  createControl,
 }
