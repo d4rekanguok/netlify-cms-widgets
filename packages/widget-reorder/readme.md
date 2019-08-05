@@ -16,8 +16,8 @@ npm i @ncwidgets/reorder
 <a href="https://custom-widgets.netlify.com/#/collections/pages/entries/home" target="_blank">Live demo</a>
 
 ## Example use 
-* Order items in a grid from another collection (using custom reorder-component). <br>
-<img src="https://ucarecdn.com/d8d76bff-586c-4872-9363-aaa3d3183375/test.gif" width=50%>
+* Order items in a grid from another collection (using custom reorder-component).
+  <img src="https://ucarecdn.com/d8d76bff-586c-4872-9363-aaa3d3183375/test.gif" width=50%>
 * Setup a custom order for any collection.
 
 ## How to use
