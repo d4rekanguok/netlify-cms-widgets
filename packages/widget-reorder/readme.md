@@ -1,4 +1,4 @@
-<h1 align="center">NetlifyCMS Reorder Widget</h1>
+<h1 align="center">Reorder Widget for NetlifyCMS</h1>
 
 <p align="center">A widget for <a href="https://www.netlifycms.org/" target="_blank">netlify-cms</a> to handle custom ordering of a referenced collection.</p>
 
@@ -22,7 +22,7 @@ npm i @ncwidgets/reorder
 
 ## How to use
 ### Example config
-Assuming that posts are a separate collection that contains fields `id` and `title`.
+Assuming that `posts` are a separate collection that contains fields `id` and `title`.
 
 ```yml
 - label: Featured Posts
