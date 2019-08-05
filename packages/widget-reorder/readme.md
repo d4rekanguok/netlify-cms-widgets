@@ -1,6 +1,6 @@
 <h1 align="center">NetlifyCMS Reorder Widget</h1>
 
-<p align="center">A widget for <a href="https://www.netlifycms.org/">netlify-cms</a> to handle custom ordering of a referenced collection.</p>
+<p align="center">A widget for <a href="https://www.netlifycms.org/" target="_blank">netlify-cms</a> to handle custom ordering of a referenced collection.</p>
 
 ---
 
@@ -13,7 +13,7 @@ npm i @ncwidgets/reorder
 
 ## Demo
 
-<a href="https://custom-widgets.netlify.com/#/collections/pages/entries/home">Live demo</a>
+<a href="https://custom-widgets.netlify.com/#/collections/pages/entries/home" target="_blank">Live demo</a>
 
 ## Example use 
 * Order items in a grid from another collection (using custom reorder-component). <br>
@@ -36,7 +36,7 @@ Assuming that posts are a separate collection that contains fields `id` and `tit
 * `collection` (**required**) is the name of the referenced collection.
 * `id_field` (**required**) is a field in the referenced collection which has to be an unique identifier.
 * `display_fields` (**required**) list of one ore more fields from the referenced collection to be displayed.
-<p>Read more about configuration options on <a href='https://www.netlifycms.org/docs/configuration-options/'>netlifyCMS</a>.</p>
+<p>Read more about configuration options on <a href='https://www.netlifycms.org/docs/configuration-options/'  target="_blank">netlifyCMS</a>.</p>
 
 ### Register default reorder-component
 ```js
