@@ -8,11 +8,11 @@
 
 ## What's inside
 
-npm package | description
----|---
-@ncwidgets/id | Generate an unique ID for new entries in a folder collection
-@ncwidgets/file-relation | Dropdown select widget for a field inside a file collection (the default relation widget only works for folder collections)
-@ncwidgets/reorder | Drag & drop to order entries in a folder collection
+npm package | description | docs
+---|---|---
+@ncwidgets/id | Generate an unique ID for new entries in a folder collection | 
+@ncwidgets/file-relation | Dropdown select widget for a field inside a file collection (the default relation widget only works for folder collections) |
+@ncwidgets/reorder | Drag & drop to order entries in a folder collection | [docs](packages/widget-reorder/readme.md)
 
 ## How to use
 
