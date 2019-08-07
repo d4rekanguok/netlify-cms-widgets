@@ -18,6 +18,7 @@ collections:
         name: id
         widget: ncw-id
         prefix: post
+        timestamp: true
         hint: This widget generate an unique read-only id
 
       - label: Categories

@@ -16,6 +16,7 @@
     "prepublishOnly": "tsc -p ./"
   },
   "dependencies": {
+    "moment": "^2.24.0",
     "shortid": "^2.2.14"
   },
   "publishConfig": {

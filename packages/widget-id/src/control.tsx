@@ -3,9 +3,6 @@ import shortid from 'shortid'
 import { WidgetProps } from '@ncwidgets/common-typings'
 
 export class Control extends React.Component<WidgetProps> {
-  public state = {
-    id: ''
-  }
   public componentDidMount() {
     const {
       value,
@@ -15,20 +12,13 @@ export class Control extends React.Component<WidgetProps> {
     
     if (value) return
   
-    const prefix = field.get('prefix')
-    const id = `${prefix ? prefix + '-' : ''}${shortid()}`
-    this.setState({ id })
-    setTimeout(() => {
-      onChange(id)
-    }, 0)
-  }
+    const usePrefix = field.get('prefix')
+    const useTimestamp = field.get('timestamp')
 
-  public componentDidUpdate() {
-    const { value, onChange } = this.props
-    const { id } = this.state
-    if (value) {
-      return
-    }
+    const prefix = usePrefix ? usePrefix + '-' : ''
+    const timestamp = useTimestamp ? Date.now() + '-' : ''
+
+    const id = prefix + timestamp + shortid()
     onChange(id)
   }
 
@@ -40,7 +30,6 @@ export class Control extends React.Component<WidgetProps> {
       setInactiveStyle,
       value,
     } = this.props
-    const { id } = this.state
     return (
       <input
         type="text"
@@ -48,8 +37,7 @@ export class Control extends React.Component<WidgetProps> {
         style={{
           color: '#cdcdcd',
         }}
-        value={value || id}
-        // value={value}
+        value={value || ''}
         id={forID}
         onFocus={setActiveStyle}
         onBlur={setInactiveStyle}
