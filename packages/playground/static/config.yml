@@ -4,10 +4,10 @@ backend:
 media_folder: assets/uploads
 
 collections:
-  - label: 'Posts'
-    label_singular: 'Post'
-    name: 'posts'
-    folder: '_posts'
+  - label: "Posts"
+    label_singular: "Post"
+    name: "posts"
+    folder: "_posts"
     create: true
     fields:
       - label: Title
@@ -47,16 +47,16 @@ collections:
             widget: ncw-reorder
             collection: posts
             id_field: id
-            display_fields: ['title', 'id']
-            hint: 'this reorder widget display entries from `posts` collection.'
+            display_fields: ["title", "id"]
+            hint: "this reorder widget display entries from `posts` collection."
 
           - label: Featured Posts (Custom)
-            name: featured-custom
+            name: featuredCustom
             widget: custom-reorder
             collection: posts
             id_field: id
-            display_fields: ['title', 'id']
-            hint: 'this is a reorder widget with custom control'
+            display_fields: ["title", "id"]
+            hint: "this is a reorder widget with custom control"
 
   - label: Setting
     name: setting
