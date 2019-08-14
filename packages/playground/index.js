@@ -4,14 +4,7 @@ import cms from 'netlify-cms-app'
 import { Widget as IdWidget } from '@ncwidgets/id'
 import { Widget as ReorderWidget, createControl } from '@ncwidgets/reorder'
 import { Widget as FileRelationWidget } from '@ncwidgets/file-relation'
-
-const loadData = async (dataPath) => {
-  const data = await fetch(dataPath)
-    .then(data => data.json())
-    .catch(err => console.error(err))
-
-  window.repoFiles = data
-}
+import repoData from './static/data'
 
 const createRoot = () => {
   const $root = document.createElement('div')
@@ -40,7 +33,7 @@ const CustomReorderControl = createControl({
 
 const CMS = () => {
   useEffect(() => {
-    loadData('./data.json')
+    window.repoFiles = repoData
 
     cms.registerWidget(IdWidget)
     cms.registerWidget(ReorderWidget)
