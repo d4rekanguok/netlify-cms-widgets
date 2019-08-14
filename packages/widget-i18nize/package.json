@@ -25,6 +25,11 @@
   "bugs": {
     "url": "https://github.com/d4rekanguok/netlify-cms-widgets/issues"
   },
+  "dependencies": {
+    "@emotion/core": "^10.0.15",
+    "@emotion/styled": "^10.0.15",
+    "immutable": "^4.0.0-rc.12"
+  },
   "peerDependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
