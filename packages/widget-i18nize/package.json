@@ -1,0 +1,35 @@
+{
+  "name": "@ncwidgets/i18nize",
+  "version": "0.4.0",
+  "description": "i18nize other netlify-cms widgets",
+  "keywords": [
+    "netlify-cms-widget",
+    "i18n",
+    "netlify-cms"
+  ],
+  "author": "Derek Nguyen <derek@penandpillow.com>",
+  "homepage": "https://github.com/d4rekanguok/netlify-cms-widgets/tree/master/packages/i18nize#readme",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d4rekanguok/netlify-cms-widgets.git"
+  },
+  "scripts": {
+    "build": "tsc -p ./",
+    "prepublishOnly": "tsc -p ./"
+  },
+  "bugs": {
+    "url": "https://github.com/d4rekanguok/netlify-cms-widgets/issues"
+  },
+  "peerDependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.23"
+  }
+}

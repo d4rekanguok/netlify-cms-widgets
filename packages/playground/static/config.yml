@@ -14,6 +14,12 @@ collections:
         name: title
         widget: string
 
+      - label: Title (i18nized)
+        name: i18n_title
+        widget: ncw-i18nize
+        wrap: string
+        langs: ["en", "kr", "de"]
+
       - label: ID
         name: id
         widget: ncw-id
