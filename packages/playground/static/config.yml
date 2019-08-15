@@ -14,11 +14,50 @@ collections:
         name: title
         widget: string
 
+      # - label: Title (i18nized)
+      #   name: i18n_title
+      #   widget: object
+      #   fields:
+      #     - label: en
+      #       name: en
+      #       widget: object
+      #       fields:
+      #         - label: Name
+      #           name: name
+      #           widget: string
+
+      #         - label: Age
+      #           name: age
+      #           widget: number
+      #           required: false
+
+      #     - label: kr
+      #       name: kr
+      #       widget: object
+      #       fields:
+      #         - label: Name
+      #           name: name
+      #           widget: string
+
+      #         - label: Age
+      #           name: age
+      #           widget: number
+      #           required: false
+
       - label: Title (i18nized)
         name: i18n_title
         widget: ncw-i18nize
-        wrap: string
         langs: ["en", "kr", "de"]
+        wrap: object
+        fields:
+          - label: Name
+            name: name
+            widget: string
+
+          - label: Age
+            name: age
+            widget: number
+            required: false
 
       - label: ID
         name: id
@@ -27,15 +66,15 @@ collections:
         timestamp: true
         hint: This widget generate an unique read-only id
 
-      - label: Categories
-        name: cats
-        widget: ncw-file-relation
-        collection: setting
-        file: cats
-        target_field: cats
-        id_field: id
-        display_fields: name
-        multiple: true
+      # - label: Categories
+      #   name: cats
+      #   widget: ncw-file-relation
+      #   collection: setting
+      #   file: cats
+      #   target_field: cats
+      #   id_field: id
+      #   display_fields: name
+      #   multiple: true
 
   - label: Pages
     name: pages

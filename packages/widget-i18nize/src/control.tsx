@@ -20,24 +20,24 @@ const FieldWrapper = styled.div<{ collapsed: boolean }>`
   & > div:first-of-type {
     margin-top: 0;
   }
-  label {
+  & > div > label {
     display: ${({ collapsed }) => collapsed ? 'none' : 'inline-block'};
     background: #c7c7d0;
   }
 
-  input {
+  & > div > input {
     border: 2px solid ${({ collapsed }) => collapsed ? '#dfdfe3' : '#c7c7d0'};
     border-top-left-radius: ${({ collapsed }) => collapsed ? '2px' : '0'};
   }
 
-  label:after, label:before {
+  & > div > label:after, 
+  & > div > label:before {
     display: none;
   }
 `
 
 interface RenderFieldProp {
   lang: string;
-  widgetType: string;
 }
 
 interface ControlState {
@@ -46,6 +46,19 @@ interface ControlState {
 }
 
 export class Control extends React.Component<WidgetProps, ControlState> {
+  public componentValidate = {}
+
+  public validate = () => {
+    const { field } = this.props
+    let fields = field.get('field') || field.get('fields')
+    fields = List.isList(fields) ? fields : List([fields])
+    console.log(fields)
+    fields.forEach(field => {
+      if (field.get('widget') === 'hidden') return
+      this.componentValidate[field.get('name')]()
+    })
+  };
+
   public state = {
     selectedLang: '',
     collapsed: true,
@@ -67,7 +80,8 @@ export class Control extends React.Component<WidgetProps, ControlState> {
       ? lang === selectedLang
       : true
     return (
-      <button 
+      <button
+        key={lang}
         onClick={() => this.switchLang(lang)}
         disabled={disabled}
       >
@@ -76,14 +90,20 @@ export class Control extends React.Component<WidgetProps, ControlState> {
     )
   }
 
-  public renderField({ lang, widgetType }: RenderFieldProp) {
+  public renderField({ lang }: RenderFieldProp) {
     const {
       field: rootField,
       value: rootValue,
       editorControl: EditorControl, 
       onChangeObject: onChange, 
+      onValidateObject: onValidate,
+      metadata,
+      fieldsErrors,
+      clearFieldErrors,
+      controlRef,
     } = this.props
 
+    const widgetType = rootField.get('wrap')
     const field = rootField
       .delete('langs')
       .delete('wrap')
@@ -96,16 +116,24 @@ export class Control extends React.Component<WidgetProps, ControlState> {
       : rootValue
 
     return (
-      <EditorControl key={lang} {...{
-        onChange,
-        value,
-        field,
-      }} />
+      <EditorControl
+        key={lang}
+        fieldsMetaData={metadata} 
+        processControlRef={controlRef && controlRef.bind(this)}
+        {...{
+          onChange,
+          onValidate,
+          value,
+          field,
+          fieldsErrors,
+          clearFieldErrors,
+          controlRef
+        }} />
     )
   }
 
-  public renderAllFields({ langs, widgetType }) {
-    return langs.map(lang => this.renderField({ lang, widgetType }))
+  public renderAllFields({ langs }) {
+    return langs.map(lang => this.renderField({ lang }))
   }
 
   public componentDidMount() {
@@ -114,11 +142,18 @@ export class Control extends React.Component<WidgetProps, ControlState> {
     this.setState({ selectedLang })
   }
 
+  public static shouldComponentUpdate() {
+    return true
+  }
+
   public render() {
     const { field, forID } = this.props
     const langs: List<string> = field.get('langs')
-    const widgetType: string = field.get('wrap')
     const { selectedLang, collapsed } = this.state
+
+    this.componentValidate['en'] && this.componentValidate['en']()
+    if (!selectedLang) return null
+
     return (
       <Wrapper id={forID}>
         <MenuWrapper>
@@ -131,8 +166,8 @@ export class Control extends React.Component<WidgetProps, ControlState> {
         </MenuWrapper>
         <FieldWrapper collapsed={collapsed}>
           {collapsed 
-            ? this.renderField({ lang: selectedLang, widgetType })
-            : this.renderAllFields({ langs, widgetType })
+            ? this.renderField({ lang: selectedLang })
+            : this.renderAllFields({ langs })
           }
         </FieldWrapper>
       </Wrapper>
