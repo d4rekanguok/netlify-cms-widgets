@@ -1,4 +1,7 @@
 import differenceBy = require('lodash/differenceBy')
+import intersectionWith = require('lodash/intersectionWith')
+import assign = require('lodash/assign')
+import isEqual = require('lodash/isEqual')
 
 export const extract = <T, K extends keyof T>(object: T, ...keys: K[]): Pick<T, K> =>
   keys.reduce((result, key) => {
@@ -55,4 +58,21 @@ export const reorder = (list, startIndex, endIndex) => {
   result.splice(endIndex, 0, removed)
 
   return result
+}
+
+// Not sure about this one...
+export const sortByOrder = <T>({ currentOrder, data, key }: DiffArgs<T>): T[] => {
+  if (currentOrder.length <= 0 && data.length <= 0) return []
+  // @ts-ignore or this one
+  const newOrder = intersectionWith(currentOrder, data, (a, b) => a[key] === b[key] && assign(a, b))
+  const modified = !isEqual(newOrder, data)
+  return {
+    // @ts-ignore or this one
+    newOrder,
+    modified
+  }
+}
+
+export const generateIdentifierFromField = (field) => {
+  return `${field.get('collection')}-${field.get('name')}-meta`
 }

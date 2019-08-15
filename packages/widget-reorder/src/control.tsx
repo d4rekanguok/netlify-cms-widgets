@@ -2,8 +2,7 @@ import * as React from 'react'
 import { fromJS, List } from 'immutable'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
-
-import { reorder, diff, extract } from './utils'
+import { reorder, diff, extract, generateIdentifierFromField } from './utils'
 
 const defaultListItem = item => Object.values(item).join(' ')
 
@@ -23,8 +22,7 @@ export const createControl: CreateControl = (options = {}) => {
     }
 
     public async componentDidMount() {
-      const { query, forID, value, field, onChange } = this.props
-
+      const { query, forID, value, field } = this.props
       const collection: string = field.get('collection')
       const fieldId: string = field.get('id_field')
       const fieldDisplay: List<string> = field.get('display_fields')
@@ -36,26 +34,32 @@ export const createControl: CreateControl = (options = {}) => {
       })
 
       if (!value || !value.toJS) {
-        onChange(fromJS(data))
-        this.setState({ data })
+        this.updateChange(data, false)
         return
       }
 
       const currentOrder = value.toJS()
       const { newOrder, modified } = diff({
-        currentOrder,
-        data,
+        data: currentOrder,
+        currentOrder: data,
         key: fieldId,
       })
-      this.setState({ data: newOrder })
-      if (modified) onChange(fromJS(newOrder))
+
+      this.updateChange(newOrder, modified)
+    }
+
+    private updateChange = (data: object, triggerOnChange = true) => {
+      const { onChange, field } = this.props
+      if (triggerOnChange) {
+        onChange(fromJS(data))
+      }
+      this.setState({ data })
+      const key = generateIdentifierFromField(field)
+      localStorage.setItem(key, JSON.stringify(data))
     }
 
     public handleDragEnd = result => {
-      const { onChange } = this.props
-
-      if (!result.destination) return
-
+      if (!result.destination || result.source.index === result.destination.index) return
       const { data } = this.state
       const sortedData = reorder(
         data,
@@ -63,11 +67,7 @@ export const createControl: CreateControl = (options = {}) => {
         result.destination.index
       )
 
-      this.setState({
-        data: sortedData,
-      })
-
-      onChange(fromJS(sortedData))
+      this.updateChange(sortedData)
     }
 
     public render() {
@@ -75,6 +75,11 @@ export const createControl: CreateControl = (options = {}) => {
       const { data } = this.state
   
       const fieldId: string = field.get('id_field')
+      const fieldDisplay: List<string> = field.get('display_fields')
+      const renderIdValue = fieldDisplay.contains(fieldId)
+
+      // Avoid render id if not in display fields
+      const renderData = renderIdValue ? data : data.map(item => extract(item, ...fieldDisplay.toJS()))
 
       if (data.length === 0) return <div>loading...</div>
       return (
@@ -90,10 +95,10 @@ export const createControl: CreateControl = (options = {}) => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {data.map((item, i) => (
+                {renderData.map((item, i) => (
                   <Draggable
-                    key={item[fieldId]}
-                    draggableId={item[fieldId]}
+                    key={`draggable${i}`}
+                    draggableId={`draggable${i}`}
                     index={i}
                   >
                     {(provided, snapshot) => (

@@ -47,7 +47,7 @@ collections:
             widget: ncw-reorder
             collection: posts
             id_field: id
-            display_fields: ["title", "id"]
+            display_fields: ["title"]
             hint: "this reorder widget display entries from `posts` collection."
 
           - label: Featured Posts (Custom)

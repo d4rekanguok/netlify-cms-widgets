@@ -28,6 +28,22 @@ describe('diff', () => {
     expect(result.newOrder).toEqual(expected)
   })
 
+  // Or sparate them as two functions?
+  // it('should put id 3 at the end and merge', () => {
+  //   const currentOrder = [{ id: 1 }, { id: 2 }]
+  //   const data = [{ id: 3, title: 'title3' }, { id: 1, title: 'title1' }, { id: 2, title: 'title2' }]
+  //   const expected = [{ id: 1, title: 'title1' }, { id: 2, title: 'title2' }, { id: 3, title: 'title3' }]
+
+  //   const result = diff({
+  //     currentOrder,
+  //     data,
+  //     key: 'id',
+  //   })
+
+  //   expect(result.modified).toBe(true)
+  //   expect(result.newOrder).toEqual(expected)
+  // })
+
   it('should return the same array if nothing changed', () => {
     const currentOrder = [{ id: 1 }, { id: 2 }, { id: 3 }]
     const data = [...currentOrder]

@@ -16,16 +16,16 @@ const homeContent = {
   ],
   featured: [
     {
-      id: 'post-Rarn0He12',
-      title: '안녕 세상',
+      id: 'post-mfYTWoPYN',
+      // title: 'Hello World',
     },
     {
       id: 'post-Rarn0HeUo',
-      title: 'Hallo Welt',
+      // title: 'Hallo Welt',
     },
     {
-      id: 'post-mfYTWoPYN',
-      title: 'Hello World',
+      id: 'post-Rarn0He12',
+      // title: '안녕 세상',
     },
   ]
 }
