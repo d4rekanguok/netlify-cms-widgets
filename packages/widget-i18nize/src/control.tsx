@@ -49,15 +49,13 @@ export class Control extends React.Component<WidgetProps, ControlState> {
   public componentValidate = {}
 
   public validate = () => {
+    console.log('----called----')
     const { field } = this.props
-    let fields = field.get('field') || field.get('fields')
-    fields = List.isList(fields) ? fields : List([fields])
-    console.log(fields)
-    fields.forEach(field => {
-      if (field.get('widget') === 'hidden') return
-      this.componentValidate[field.get('name')]()
+    const langs: List<string> = field.get('langs')
+    langs.forEach(lang => {
+      this.componentValidate[lang]()
     })
-  };
+  }
 
   public state = {
     selectedLang: '',
@@ -104,12 +102,15 @@ export class Control extends React.Component<WidgetProps, ControlState> {
     } = this.props
 
     const widgetType = rootField.get('wrap')
+
+    const subFields = rootField.get('fields').last()
     const field = rootField
       .delete('langs')
       .delete('wrap')
       .set('name', lang)
       .set('label', lang)
       .set('widget', widgetType)
+      .set('fields', List([subFields]))
 
     const value = rootValue && Map.isMap(rootValue) 
       ? rootValue.get(lang) 
@@ -142,7 +143,7 @@ export class Control extends React.Component<WidgetProps, ControlState> {
     this.setState({ selectedLang })
   }
 
-  public static shouldComponentUpdate() {
+  public shouldComponentUpdate() {
     return true
   }
 
@@ -151,7 +152,6 @@ export class Control extends React.Component<WidgetProps, ControlState> {
     const langs: List<string> = field.get('langs')
     const { selectedLang, collapsed } = this.state
 
-    this.componentValidate['en'] && this.componentValidate['en']()
     if (!selectedLang) return null
 
     return (

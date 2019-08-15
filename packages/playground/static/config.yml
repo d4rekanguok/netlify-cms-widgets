@@ -14,50 +14,18 @@ collections:
         name: title
         widget: string
 
-      # - label: Title (i18nized)
-      #   name: i18n_title
-      #   widget: object
-      #   fields:
-      #     - label: en
-      #       name: en
-      #       widget: object
-      #       fields:
-      #         - label: Name
-      #           name: name
-      #           widget: string
-
-      #         - label: Age
-      #           name: age
-      #           widget: number
-      #           required: false
-
-      #     - label: kr
-      #       name: kr
-      #       widget: object
-      #       fields:
-      #         - label: Name
-      #           name: name
-      #           widget: string
-
-      #         - label: Age
-      #           name: age
-      #           widget: number
-      #           required: false
-
       - label: Title (i18nized)
         name: i18n_title
         widget: ncw-i18nize
         langs: ["en", "kr", "de"]
         wrap: object
         fields:
+          # - name: en
+          # - name: kr
+          # - name: de
           - label: Name
             name: name
             widget: string
-
-          - label: Age
-            name: age
-            widget: number
-            required: false
 
       - label: ID
         name: id
