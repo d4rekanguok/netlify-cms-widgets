@@ -1,4 +1,4 @@
-import { removeOutdatedItem, diff, extract } from './utils'
+import { removeOutdatedItem, diff, extract, copy } from './utils'
 
 describe('removeOutdatedItem', () => {
   it('should remove outdated items', () => {
@@ -28,21 +28,20 @@ describe('diff', () => {
     expect(result.newOrder).toEqual(expected)
   })
 
-  // Or sparate them as two functions?
-  // it('should put id 3 at the end and merge', () => {
-  //   const currentOrder = [{ id: 1 }, { id: 2 }]
-  //   const data = [{ id: 3, title: 'title3' }, { id: 1, title: 'title1' }, { id: 2, title: 'title2' }]
-  //   const expected = [{ id: 1, title: 'title1' }, { id: 2, title: 'title2' }, { id: 3, title: 'title3' }]
+  it('should put id 3 at the end and merge', () => {
+    const currentOrder = [{ id: 1 }, { id: 2 }]
+    const data = [{ id: 3, title: 'title3' }, { id: 1, title: 'title1' }, { id: 2, title: 'title2' }]
+    const expected = [{ id: 1, title: 'title1' }, { id: 2, title: 'title2' }, { id: 3, title: 'title3' }]
 
-  //   const result = diff({
-  //     currentOrder,
-  //     data,
-  //     key: 'id',
-  //   })
+    const result = diff({
+      currentOrder,
+      data,
+      key: 'id',
+    })
 
-  //   expect(result.modified).toBe(true)
-  //   expect(result.newOrder).toEqual(expected)
-  // })
+    expect(result.modified).toBe(true)
+    expect(result.newOrder).toEqual(expected)
+  })
 
   it('should return the same array if nothing changed', () => {
     const currentOrder = [{ id: 1 }, { id: 2 }, { id: 3 }]
@@ -84,6 +83,18 @@ describe('extract', () => {
     }
     const result = extract(data, 'a', 'b')
 
+    expect(result).toEqual(expected)
+  })
+})
+
+describe('copy', () => {
+  it('should copy from data into order by matching key', () => {
+    const order = [{ id: 1 }, { id: 4 }, { id: 3 }]
+    const data = [{ id: 1, a: 'a1' }, { id: 2, a: 'a2' }, { id: 3, a: 'a3' }, { id: 4, a: 'a4' }]
+
+    const expected = [{ id: 1, a: 'a1'}, { id: 4, a: 'a4' }, { id: 3, a: 'a3' }]
+
+    const result = copy({ from: data, into: order, key: 'id' })
     expect(result).toEqual(expected)
   })
 })

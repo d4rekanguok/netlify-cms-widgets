@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { generateIdentifierFromField, sortByOrder } from './utils'
+import { generateIdentifierFromField, copy } from './utils'
 
 export const Preview = (props) => {
   const [data, setData] = useState<Array<object>>([])
@@ -18,14 +18,14 @@ export const Preview = (props) => {
     
     const currentOrder = value.toJS()
     const key: string = props.field.get('id_field')
-    const { newOrder, modified } = sortByOrder({
-      currentOrder,
-      data,
+    const newOrder = copy({
+      from: data,
+      into: currentOrder,
       // @ts-ignore (how can we avoid this?)
       key
     })
 
-    if (modified) setData(newOrder)
+    setData(newOrder)
 
   }, [value])
 

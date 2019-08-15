@@ -40,8 +40,8 @@ export const createControl: CreateControl = (options = {}) => {
 
       const currentOrder = value.toJS()
       const { newOrder, modified } = diff({
-        data: currentOrder,
-        currentOrder: data,
+        currentOrder,
+        data,
         key: fieldId,
       })
 
