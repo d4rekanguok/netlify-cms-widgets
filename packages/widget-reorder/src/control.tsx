@@ -16,25 +16,22 @@ export const createControl: CreateControl = (options = {}) => {
   const renderListItem = options.renderListItem || defaultListItem
   
   return class Control extends React.Component<WidgetProps> {
-
-    public state = {
-      data: [],
-    }
+    public widgetId = createWidgetId(this.props.field)
 
     public async componentDidMount() {
-      const { query, forID, value, field } = this.props
+      const { query, forID, value, field, onChange } = this.props
       const collection: string = field.get('collection')
       const fieldId: string = field.get('id_field')
-      const fieldDisplay: List<string> = field.get('display_fields')
-      const fieldsToBeExtracted = Array.from(new Set([fieldId, ...fieldDisplay.toJS()]))
-
       const result = await query(forID, collection, [fieldId], '')
-      const data = result.payload.response.hits.map(payload => {
-        return extract(payload.data, ...fieldsToBeExtracted)
-      })
+
+      // send completed data to localStorage
+      const sourceData = result.payload.response.hits.map(payload => payload.data)
+      localStorage.setItem(this.widgetId, JSON.stringify(sourceData))
+
+      const data = sourceData.map(item => extract(item, fieldId))
 
       if (!value || !value.toJS) {
-        this.updateChange(data, false)
+        onChange(fromJS(data))
         return
       }
 
@@ -45,43 +42,37 @@ export const createControl: CreateControl = (options = {}) => {
         key: fieldId,
       })
 
-      this.updateChange(newOrder, modified)
-    }
-
-    private updateChange = (data: object, triggerOnChange = true) => {
-      const { onChange, field } = this.props
-      if (triggerOnChange) {
-        onChange(fromJS(data))
+      if (modified) {
+        onChange(fromJS(newOrder))
       }
-      this.setState({ data })
-      const key = createWidgetId(field)
-      localStorage.setItem(key, JSON.stringify(data))
     }
 
     public handleDragEnd = result => {
       if (!result.destination || result.source.index === result.destination.index) return
-      const { data } = this.state
+      const { value, onChange } = this.props
+      const data = value.toJS()
+
       const sortedData = reorder(
         data,
         result.source.index,
         result.destination.index
       )
 
-      this.updateChange(sortedData)
+      onChange(fromJS(sortedData))
     }
 
     public render() {
-      const { field } = this.props
-      const { data } = this.state
-  
+      const { value, field } = this.props
+      const sourceDataJson = localStorage.getItem(this.widgetId)
+
+      if (value.length === 0 || !sourceDataJson) return <div>loading...</div>
+
       const fieldId: string = field.get('id_field')
-      const fieldDisplay: List<string> = field.get('display_fields')
-      const renderIdValue = fieldDisplay.contains(fieldId)
+      const fieldDisplay: List<string> = field.get('display_fields') || List()
+      const fieldToBeExtracted = fieldDisplay.push(fieldId).toSet().toList()
+      const sourceData = JSON.parse(sourceDataJson)
+      const displayData = value.map(item => extract(sourceData.find(sourceItem => sourceItem[fieldId] === item.get(fieldId)), ...fieldToBeExtracted))
 
-      // Avoid render id if not in display fields
-      const renderData = renderIdValue ? data : data.map(item => extract(item, ...fieldDisplay.toJS()))
-
-      if (data.length === 0) return <div>loading...</div>
       return (
         <DragDropContext onDragEnd={this.handleDragEnd}>
           <Droppable droppableId="droppable">
@@ -95,10 +86,10 @@ export const createControl: CreateControl = (options = {}) => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {renderData.map((item, i) => (
+                {displayData.map((item, i) => (
                   <Draggable
-                    key={`draggable${i}`}
-                    draggableId={`draggable${i}`}
+                    key={`draggable-${item[fieldId]}`}
+                    draggableId={`draggable-${item[fieldId]}`}
                     index={i}
                   >
                     {(provided, snapshot) => (
