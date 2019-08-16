@@ -1,3 +1,4 @@
+import { Map } from 'immutable'
 import differenceBy = require('lodash/differenceBy')
 
 export const extract = <T, K extends keyof T>(object: T, ...keys: K[]): Pick<T, K> =>
@@ -27,9 +28,9 @@ interface DiffResult<T> {
 }
 
 interface CopyArgs<T> {
-  from: T[]
-  into: T[]
-  key: keyof T
+  from: T[];
+  into: T[];
+  key: keyof T;
 }
 
 export const copy = <T>({from, into, key}: CopyArgs<T>): T[] => {
@@ -71,6 +72,6 @@ export const reorder = (list, startIndex, endIndex) => {
   return result
 }
 
-export const generateIdentifierFromField = (field) => {
+export const createWidgetId = (field: Map<unknown, unknown>) => {
   return `${field.get('collection')}-${field.get('name')}-meta`
 }

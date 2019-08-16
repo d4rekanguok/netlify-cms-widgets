@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { generateIdentifierFromField, copy } from './utils'
+import { createWidgetId, copy } from './utils'
 
 export const Preview = (props) => {
-  const [data, setData] = useState<Array<object>>([])
-  const { value } = props
+  const [data, setData] = useState<object[]>([])
+  const { value, field } = props
 
   // Fetch initial data from localstorage
   useEffect(() => {
-    const key = generateIdentifierFromField(props.field)
+    const key = createWidgetId(field)
     const metadata = localStorage.getItem(key)
     if (metadata) setData(JSON.parse(metadata))
   }, [])
@@ -17,7 +17,7 @@ export const Preview = (props) => {
     if (data.length === 0) return
     
     const currentOrder = value.toJS()
-    const key: string = props.field.get('id_field')
+    const key: string = field.get('id_field')
     const newOrder = copy({
       from: data,
       into: currentOrder,
@@ -31,13 +31,13 @@ export const Preview = (props) => {
 
   if (!data) return <div>Loading...</div>
   return(
-  <ul>
-    {data.map((item, i) => (
-      <li key={`listItem-${i}`}>
-        <p>
-          {Object.entries(item).map(([key, value]) => `${key}: ${value}`).join(', ')}
-        </p>
-    </li>
-    ))}
-  </ul>)
+    <ul>
+      {data.map((item, i) => (
+        <li key={`listItem-${i}`}>
+          <p>
+            {Object.entries(item).map(([key, value]) => `${key}: ${value}`).join(', ')}
+          </p>
+        </li>
+      ))}
+    </ul>)
 }

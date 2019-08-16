@@ -2,7 +2,7 @@ import * as React from 'react'
 import { fromJS, List } from 'immutable'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
-import { reorder, diff, extract, generateIdentifierFromField } from './utils'
+import { reorder, diff, extract, createWidgetId } from './utils'
 
 const defaultListItem = item => Object.values(item).join(' ')
 
@@ -54,7 +54,7 @@ export const createControl: CreateControl = (options = {}) => {
         onChange(fromJS(data))
       }
       this.setState({ data })
-      const key = generateIdentifierFromField(field)
+      const key = createWidgetId(field)
       localStorage.setItem(key, JSON.stringify(data))
     }
 
