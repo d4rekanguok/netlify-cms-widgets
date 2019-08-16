@@ -101,16 +101,17 @@ export class Control extends React.Component<WidgetProps, ControlState> {
       controlRef,
     } = this.props
 
-    const widgetType = rootField.get('wrap')
+    const widgetType = rootField.get('wrap_widget')
 
-    const subFields = rootField.get('fields').last()
+    const subFields = rootField.get('wrap_fields')
     const field = rootField
       .delete('langs')
-      .delete('wrap')
+      .delete('wrap_widget')
+      .delete('wrap_fields')
       .set('name', lang)
       .set('label', lang)
       .set('widget', widgetType)
-      .set('fields', List([subFields]))
+      .set('fields', subFields)
 
     const value = rootValue && Map.isMap(rootValue) 
       ? rootValue.get(lang) 

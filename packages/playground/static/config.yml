@@ -18,14 +18,15 @@ collections:
         name: i18n_title
         widget: ncw-i18nize
         langs: ["en", "kr", "de"]
-        wrap: object
-        fields:
-          # - name: en
-          # - name: kr
-          # - name: de
+        wrap_widget: object
+        wrap_fields:
           - label: Name
             name: name
             widget: string
+          - label: Age
+            name: age
+            widget: number
+            required: false
 
       - label: ID
         name: id
