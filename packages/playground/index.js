@@ -28,7 +28,7 @@ const CustomReorderPreview = ({ value }) => (
 )
 
 const CustomReorderControl = createControl({
-  renderListItem: item => <ListComponent item={item} />
+  renderListItem: ({ item }) => <ListComponent item={item} />
 })
 
 const CMS = () => {

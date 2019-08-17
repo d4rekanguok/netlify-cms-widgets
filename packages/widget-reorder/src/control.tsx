@@ -1,22 +1,38 @@
 import * as React from 'react'
-import { fromJS, List } from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
 import { reorder, diff, extract, createWidgetId, normalize } from './utils'
 
-const defaultListItem = item => Object.values(item).join(' ')
+interface RenderListItemArgs {
+  item: Record<any, any>;
+  fieldDisplay: List<string>;
+}
+type RenderListResult = string | React.ComponentType<RenderListItemArgs>;
+type RenderListItem = (args: RenderListItemArgs) => RenderListResult
 
-export interface CreateControlOptions {
-  renderListItem?: (item: object) => React.ComponentType<{ item: Record<string, any> }>;
+const defaultListItem: RenderListItem = ({ item, fieldDisplay }) => {
+  const displayData = extract(item, ...fieldDisplay)
+  return Object.values(displayData).join(' ')
 }
 
-type CreateControl = (options?: CreateControlOptions) => React.ComponentClass<WidgetProps>
+export interface CreateControlOptions {
+  renderListItem?: RenderListItem;
+}
+export interface ControlProps extends WidgetProps {
+  value: List<Map<any, any>>;
+}
+type CreateControl = (options?: CreateControlOptions) => React.ComponentClass<ControlProps>
 
 export const createControl: CreateControl = (options = {}) => {
   const renderListItem = options.renderListItem || defaultListItem
   
-  return class Control extends React.Component<WidgetProps> {
+  return class Control extends React.Component<ControlProps> {
     public widgetId = createWidgetId(this.props.field)
+
+    public state = {
+      data: {}
+    }
 
     public async componentDidMount() {
       const { query, forID, value, field, onChange } = this.props
@@ -28,6 +44,7 @@ export const createControl: CreateControl = (options = {}) => {
       const sourceData = result.payload.response.hits.map(payload => payload.data)
       // @ts-ignore
       const normalizedData = normalize(sourceData, fieldId)
+      this.setState({ data: normalizedData })
       sessionStorage.setItem(this.widgetId, JSON.stringify(normalizedData))
 
       const data = sourceData.map(item => extract(item, fieldId))
@@ -65,15 +82,13 @@ export const createControl: CreateControl = (options = {}) => {
 
     public render() {
       const { value, field } = this.props
-      const sourceDataJson = sessionStorage.getItem(this.widgetId)
+      const { data } = this.state
 
-      if (value.length === 0 || !sourceDataJson) return <div>loading...</div>
+      if (value.size === 0 || Object.keys(data).length === 0) 
+        return <div>loading...</div>
 
       const fieldId: string = field.get('id_field')
       const fieldDisplay: List<string> = field.get('display_fields') || List()
-      const fieldToBeExtracted = fieldDisplay.push(fieldId).toSet().toList()
-      const normalizedData = JSON.parse(sourceDataJson)
-      const displayData = value.map(item => extract(normalizedData[item.get(fieldId)], ...fieldToBeExtracted))
 
       return (
         <DragDropContext onDragEnd={this.handleDragEnd}>
@@ -88,32 +103,35 @@ export const createControl: CreateControl = (options = {}) => {
                 {...provided.droppableProps}
                 ref={provided.innerRef}
               >
-                {displayData.map((item, i) => (
-                  <Draggable
-                    key={`draggable-${item[fieldId]}`}
-                    draggableId={`draggable-${item[fieldId]}`}
-                    index={i}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={{
-                          padding: '1rem',
-                          opacity: snapshot.isDragging ? 0.6 : 1,
-                          boxShadow: snapshot.isDragging ?  '0 4px 16px 0 rgba(0,0,0,0.2)' : '0 2px 6px 0 rgba(0,0,0,0.2)',
-                          background: '#fff',
-                          borderRadius: '3px',
-                          marginBottom: '0.5rem',
-                          ...provided.draggableProps.style,
-                        }}
-                      >
-                        {renderListItem(item)}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
+                {value.map((item, i) => {
+                  const itemId = item.get(fieldId)
+                  const sourceItem = data[itemId]
+                  return (
+                    <Draggable
+                      key={`draggable-${itemId}`}
+                      draggableId={`draggable-${itemId}`}
+                      index={i}
+                    >
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={{
+                            padding: '1rem',
+                            opacity: snapshot.isDragging ? 0.6 : 1,
+                            boxShadow: snapshot.isDragging ?  '0 4px 16px 0 rgba(0,0,0,0.2)' : '0 2px 6px 0 rgba(0,0,0,0.2)',
+                            background: '#fff',
+                            borderRadius: '3px',
+                            marginBottom: '0.5rem',
+                            ...provided.draggableProps.style,
+                          }}
+                        >
+                          {renderListItem({ item: sourceItem, fieldDisplay })}
+                        </div>
+                      )}
+                    </Draggable>
+                  )})}
                 {provided.placeholder}
               </div>
             )}
