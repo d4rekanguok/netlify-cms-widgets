@@ -3,17 +3,12 @@ import { fromJS, List, Map } from 'immutable'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
 import { reorder, diff, extract, createWidgetId, normalize } from './utils'
+import { RenderListItem, defaultListItem } from './renderListItem'
+import { NoticeBar } from './notice'
 
-interface RenderListItemArgs {
-  item: Record<any, any>;
-  fieldDisplay: List<string>;
-}
-type RenderListResult = string | React.ComponentType<RenderListItemArgs>;
-type RenderListItem = (args: RenderListItemArgs) => RenderListResult
-
-const defaultListItem: RenderListItem = ({ item, fieldDisplay }) => {
-  const displayData = extract(item, ...fieldDisplay)
-  return Object.values(displayData).join(' ')
+const modifiedMsg = {
+  empty: 'You haven\'t set order yet',
+  modified: 'Source collection has been changed.'
 }
 
 export interface CreateControlOptions {
@@ -21,6 +16,11 @@ export interface CreateControlOptions {
 }
 export interface ControlProps extends WidgetProps {
   value: List<Map<any, any>>;
+}
+export interface ControlState {
+  data: Record<string, any>;
+  modified: 'none' | 'empty' | 'modified';
+  newOrder: any[];
 }
 type CreateControl = (options?: CreateControlOptions) => React.ComponentClass<ControlProps>
 
@@ -31,11 +31,14 @@ export const createControl: CreateControl = (options = {}) => {
     public widgetId = createWidgetId(this.props.field)
 
     public state = {
-      data: {}
+      normalizedData: {},
+      fetched: false,
+      modified: 'none',
+      newOrder: [],
     }
 
     public async componentDidMount() {
-      const { query, forID, value, field, onChange } = this.props
+      const { query, forID, value, field } = this.props
       const collection: string = field.get('collection')
       const fieldId: string = field.get('id_field')
       const result = await query(forID, collection, [fieldId], '')
@@ -44,13 +47,17 @@ export const createControl: CreateControl = (options = {}) => {
       const sourceData = result.payload.response.hits.map(payload => payload.data)
       // @ts-ignore
       const normalizedData = normalize(sourceData, fieldId)
-      this.setState({ data: normalizedData })
+      this.setState({ normalizedData, fetched: true })
       sessionStorage.setItem(this.widgetId, JSON.stringify(normalizedData))
 
       const data = sourceData.map(item => extract(item, fieldId))
 
+      // Order hasn't been set yet
       if (!value || !value.toJS) {
-        onChange(fromJS(data))
+        this.setState({
+          newOrder: data,
+          modified: 'empty',
+        })
         return
       }
 
@@ -61,9 +68,18 @@ export const createControl: CreateControl = (options = {}) => {
         key: fieldId,
       })
 
+      // source data has been modified
       if (modified) {
-        onChange(fromJS(newOrder))
+        this.setState({ newOrder, modified: 'modified' })
       }
+    }
+
+    public handleDisplayChange = () => {
+      const { onChange } = this.props
+      const { newOrder } = this.state
+      this.setState({ modified: 'none' }, () => {
+        onChange(fromJS(newOrder))
+      })
     }
 
     public handleDragEnd = result => {
@@ -82,17 +98,21 @@ export const createControl: CreateControl = (options = {}) => {
 
     public render() {
       const { value, field } = this.props
-      const { data } = this.state
+      const { normalizedData, modified, fetched } = this.state
 
-      if (value.size === 0 || Object.keys(data).length === 0) 
-        return <div>loading...</div>
+      if (!fetched) {
+        return <div>Loading...</div>
+      }
 
       const fieldId: string = field.get('id_field')
       const fieldDisplay: List<string> = field.get('display_fields') || List()
 
       return (
         <DragDropContext onDragEnd={this.handleDragEnd}>
-          <Droppable droppableId="droppable">
+          {modified !== 'none' && <NoticeBar displayChange={this.handleDisplayChange}>
+            {modifiedMsg[modified]}
+          </NoticeBar>}
+          {value && <Droppable droppableId="droppable">
             {(provided, snapshot) => (
               <div
                 style={{
@@ -105,12 +125,20 @@ export const createControl: CreateControl = (options = {}) => {
               >
                 {value.map((item, i) => {
                   const itemId = item.get(fieldId)
-                  const sourceItem = data[itemId]
+                  let renderItem =itemId
+                  let isRemoved = true
+                  const sourceItem = normalizedData[itemId]
+                  if (sourceItem) {
+                    renderItem = sourceItem
+                    isRemoved = false
+                  }
+
                   return (
                     <Draggable
                       key={`draggable-${itemId}`}
                       draggableId={`draggable-${itemId}`}
                       index={i}
+                      isDragDisabled={isRemoved}
                     >
                       {(provided, snapshot) => (
                         <div
@@ -121,13 +149,13 @@ export const createControl: CreateControl = (options = {}) => {
                             padding: '1rem',
                             opacity: snapshot.isDragging ? 0.6 : 1,
                             boxShadow: snapshot.isDragging ?  '0 4px 16px 0 rgba(0,0,0,0.2)' : '0 2px 6px 0 rgba(0,0,0,0.2)',
-                            background: '#fff',
+                            background: isRemoved ? '#e9e9f0' : '#fff',
                             borderRadius: '3px',
                             marginBottom: '0.5rem',
                             ...provided.draggableProps.style,
                           }}
                         >
-                          {renderListItem({ item: sourceItem, fieldDisplay })}
+                          {renderListItem({ item: renderItem, fieldDisplay, isRemoved })}
                         </div>
                       )}
                     </Draggable>
@@ -135,7 +163,7 @@ export const createControl: CreateControl = (options = {}) => {
                 {provided.placeholder}
               </div>
             )}
-          </Droppable>
+          </Droppable>}
         </DragDropContext>
       )
     }

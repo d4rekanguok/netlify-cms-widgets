@@ -3,7 +3,7 @@ import { List } from 'immutable'
 import { createWidgetId, extract } from './utils'
 
 export const Preview = ({ value, field }) => {
-  const [data, setData] = useState<Record<any, any>>({})
+  const [data, setData] = useState<null | Record<any, any>>(null)
   const widgetId = useRef<string>(createWidgetId(field))
 
   const fieldId: string = field.get('id_field')
@@ -15,7 +15,7 @@ export const Preview = ({ value, field }) => {
     if (normalizedData) setData(JSON.parse(normalizedData))
   }, [])
 
-  if (Object.keys(data).length === 0) return <div>Loading...</div>
+  if (!data) return <div>Loading...</div>
   return(
     <ul>
       {value.map((item, i) => {

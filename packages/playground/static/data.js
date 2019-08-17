@@ -3,29 +3,23 @@ const homeContent = {
   featuredCustom: [
     {
       id: 'post-Rarn0He12',
-      title: '안녕 세상',
     },
     {
       id: 'post-Rarn0HeUo',
-      title: 'Hallo Welt',
     },
     {
       id: 'post-mfYTWoPYN',
-      title: 'Hello World',
     },
   ],
   featured: [
-    {
-      id: 'post-mfYTWoPYN',
-      // title: 'Hello World',
-    },
+    // {
+    //   id: 'post-Rarn0He12',
+    // },
     {
       id: 'post-Rarn0HeUo',
-      // title: 'Hallo Welt',
     },
     {
-      id: 'post-Rarn0He12',
-      // title: '안녕 세상',
+      id: 'post-mfYTWoPYN',
     },
   ]
 }
