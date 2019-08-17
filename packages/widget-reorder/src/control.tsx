@@ -112,6 +112,7 @@ export const createControl: CreateControl = (options = {}) => {
           {modified !== 'none' && <NoticeBar displayChange={this.handleDisplayChange}>
             {modifiedMsg[modified]}
           </NoticeBar>}
+          {modified === 'none' && Object.keys(normalizedData).length === 0 && <div>Source collection is empty</div>}
           {value && <Droppable droppableId="droppable">
             {(provided, snapshot) => (
               <div
