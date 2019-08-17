@@ -6,7 +6,7 @@ describe('removeOutdatedItem', () => {
     const expected = [...data]
     const outdated = expected.splice(8, 2)
 
-    const newData = removeOutdatedItem(data, outdated, 'id')
+    const newData = removeOutdatedItem(data, outdated)
     expect(newData).toEqual(expected)
     expect(newData).not.toEqual(data)
   })
@@ -21,7 +21,6 @@ describe('diff', () => {
     const result = diff({
       currentOrder,
       data,
-      key: 'id',
     })
 
     expect(result.modified).toBe(true)

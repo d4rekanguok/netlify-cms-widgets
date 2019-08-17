@@ -24,6 +24,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@types/react": "^16.8.23"
+    "@types/react": "^16.8.23",
+    "@types/react-beautiful-dnd": "^11.0.3"
   }
 }

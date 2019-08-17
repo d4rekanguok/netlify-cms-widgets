@@ -1,4 +1,4 @@
-import differenceBy = require('lodash/differenceBy')
+import difference = require('lodash/difference')
 
 export const extract = <T, K extends keyof T>(object: T, ...keys: K[]): Pick<T, K> =>
   keys.reduce((result, key) => {
@@ -9,16 +9,14 @@ export const extract = <T, K extends keyof T>(object: T, ...keys: K[]): Pick<T, 
 export const removeOutdatedItem = <T>(
   data: T[],
   outdated: T[],
-  key: keyof T
-): T[] =>
+  ): T[] =>
   data.filter(item => {
-    return !outdated.some(outdatedItem => outdatedItem[key] === item[key])
+    return !outdated.includes(item)
   })
 
 interface DiffArgs<T> {
   currentOrder: T[];
   data: T[];
-  key: keyof T;
 }
 
 interface DiffResult<T> {
@@ -29,10 +27,10 @@ interface DiffResult<T> {
 export const diff = <T>({
   currentOrder,
   data,
-  key,
 }: DiffArgs<T>): DiffResult<T> => {
-  const outdatedItem = differenceBy(currentOrder, data, key)
-  const newItem = differenceBy(data, currentOrder, key)
+  const outdatedItem = difference(currentOrder, data)
+  const newItem = difference(data, currentOrder)
+
   if (outdatedItem.length === 0 && newItem.length === 0) {
     return {
       modified: false,
@@ -40,11 +38,11 @@ export const diff = <T>({
     }
   }
 
-  const newOrder = removeOutdatedItem(currentOrder, outdatedItem, key).concat(
+  const newOrder = removeOutdatedItem(currentOrder, outdatedItem).concat(
     newItem
   )
   return {
-    modified: true,
+    modified: false,
     newOrder,
   }
 }

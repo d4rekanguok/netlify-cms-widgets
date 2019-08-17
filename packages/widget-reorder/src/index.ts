@@ -1,17 +1,8 @@
-import { createControl } from './control'
-import { Preview } from './preview'
+import { createWidget } from './widget'
 
-const Control = createControl()
-
-const Widget = {
-  name: 'ncw-reorder',
-  controlComponent: Control,
-  previewComponent: Preview,
-}
+const Widget = createWidget({})
 
 export {
   Widget,
-  Control,
-  Preview,
-  createControl,
+  createWidget,
 }
