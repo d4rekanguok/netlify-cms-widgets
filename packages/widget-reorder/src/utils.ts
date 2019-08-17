@@ -27,45 +27,39 @@ interface DiffResult<T> {
   newOrder: T[];
 }
 
-interface CopyArgs<T> {
-  from: T[];
-  into: T[];
-  key: keyof T;
-}
-
-export const copy = <T>({from, into, key}: CopyArgs<T>): T[] => {
-  return into.map(a => ({
-    ...a,
-    ...from.find(b => b[key] === a[key])
-  }))
-}
-
 export const diff = <T>({
   currentOrder,
   data,
   key,
 }: DiffArgs<T>): DiffResult<T> => {
-  const currentOrderMerged = copy({ from: data, into: currentOrder, key })
-  const outdatedItem = differenceBy(currentOrderMerged, data, key)
-  const newItem = differenceBy(data, currentOrderMerged, key)
+  const outdatedItem = differenceBy(currentOrder, data, key)
+  const newItem = differenceBy(data, currentOrder, key)
   if (outdatedItem.length === 0 && newItem.length === 0) {
     return {
       modified: false,
-      newOrder: currentOrderMerged
+      newOrder: currentOrder,
     }
   }
 
-  const newOrder = removeOutdatedItem(currentOrderMerged, outdatedItem, key).concat(
+  const newOrder = removeOutdatedItem(currentOrder, outdatedItem, key).concat(
     newItem
   )
   return {
     modified: true,
-    newOrder
+    newOrder,
   }
 }
 
-export const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list)
+
+export const normalize = <T, K extends keyof T>(data: T[], key: K): Record<string, T> => 
+  data.reduce((result, item) => {
+    const id = String(item[key])
+    result[id] = item
+    return result
+  }, ({} as Record<string, T>))
+
+export const reorder = ({ data, startIndex, endIndex }) => {
+  const result = Array.from(data)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)
 

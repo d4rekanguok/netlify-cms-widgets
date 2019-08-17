@@ -2,7 +2,7 @@ import * as React from 'react'
 import { fromJS, List } from 'immutable'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
-import { reorder, diff, extract, createWidgetId } from './utils'
+import { reorder, diff, extract, createWidgetId, normalize } from './utils'
 
 const defaultListItem = item => Object.values(item).join(' ')
 
@@ -24,9 +24,11 @@ export const createControl: CreateControl = (options = {}) => {
       const fieldId: string = field.get('id_field')
       const result = await query(forID, collection, [fieldId], '')
 
-      // send completed data to localStorage
+      // send completed data to sessionStorage
       const sourceData = result.payload.response.hits.map(payload => payload.data)
-      localStorage.setItem(this.widgetId, JSON.stringify(sourceData))
+      // @ts-ignore
+      const normalizedData = normalize(sourceData, fieldId)
+      sessionStorage.setItem(this.widgetId, JSON.stringify(normalizedData))
 
       const data = sourceData.map(item => extract(item, fieldId))
 
@@ -52,26 +54,26 @@ export const createControl: CreateControl = (options = {}) => {
       const { value, onChange } = this.props
       const data = value.toJS()
 
-      const sortedData = reorder(
+      const sortedData = reorder({
         data,
-        result.source.index,
-        result.destination.index
-      )
+        startIndex: result.source.index,
+        endIndex: result.destination.index
+      })
 
       onChange(fromJS(sortedData))
     }
 
     public render() {
       const { value, field } = this.props
-      const sourceDataJson = localStorage.getItem(this.widgetId)
+      const sourceDataJson = sessionStorage.getItem(this.widgetId)
 
       if (value.length === 0 || !sourceDataJson) return <div>loading...</div>
 
       const fieldId: string = field.get('id_field')
       const fieldDisplay: List<string> = field.get('display_fields') || List()
       const fieldToBeExtracted = fieldDisplay.push(fieldId).toSet().toList()
-      const sourceData = JSON.parse(sourceDataJson)
-      const displayData = value.map(item => extract(sourceData.find(sourceItem => sourceItem[fieldId] === item.get(fieldId)), ...fieldToBeExtracted))
+      const normalizedData = JSON.parse(sourceDataJson)
+      const displayData = value.map(item => extract(normalizedData[item.get(fieldId)], ...fieldToBeExtracted))
 
       return (
         <DragDropContext onDragEnd={this.handleDragEnd}>

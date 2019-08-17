@@ -1,4 +1,4 @@
-import { removeOutdatedItem, diff, extract, copy } from './utils'
+import { removeOutdatedItem, diff, extract, normalize } from './utils'
 
 describe('removeOutdatedItem', () => {
   it('should remove outdated items', () => {
@@ -17,21 +17,6 @@ describe('diff', () => {
     const currentOrder = [{ id: 1 }, { id: 2 }, { id: 3 }]
     const data = [{ id: 2 }, { id: 3 }, { id: 4 }]
     const expected = [{ id: 2 }, { id: 3 }, { id: 4 }]
-
-    const result = diff({
-      currentOrder,
-      data,
-      key: 'id',
-    })
-
-    expect(result.modified).toBe(true)
-    expect(result.newOrder).toEqual(expected)
-  })
-
-  it('should put id 3 at the end and merge', () => {
-    const currentOrder = [{ id: 1 }, { id: 2 }]
-    const data = [{ id: 3, title: 'title3' }, { id: 1, title: 'title1' }, { id: 2, title: 'title2' }]
-    const expected = [{ id: 1, title: 'title1' }, { id: 2, title: 'title2' }, { id: 3, title: 'title3' }]
 
     const result = diff({
       currentOrder,
@@ -87,14 +72,17 @@ describe('extract', () => {
   })
 })
 
-describe('copy', () => {
-  it('should copy from data into order by matching key', () => {
-    const order = [{ id: 1 }, { id: 4 }, { id: 3 }]
-    const data = [{ id: 1, a: 'a1' }, { id: 2, a: 'a2' }, { id: 3, a: 'a3' }, { id: 4, a: 'a4' }]
+describe('normalize', () => {
+  it('should turn an array of T to an object of a key of T', () => {
+    const data = [ {id: 'a', content: 100}, {id: 'b', content: 200}, {id: 'c', content: 300} ]
+    const expected = {
+      a: data[0],
+      b: data[1],
+      c: data[2],
+    }
+    const result = normalize(data, 'id')
 
-    const expected = [{ id: 1, a: 'a1'}, { id: 4, a: 'a4' }, { id: 3, a: 'a3' }]
-
-    const result = copy({ from: data, into: order, key: 'id' })
     expect(result).toEqual(expected)
+    expect(result.a).toBe(data[0])
   })
 })

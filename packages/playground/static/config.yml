@@ -55,7 +55,7 @@ collections:
             widget: custom-reorder
             collection: posts
             id_field: id
-            display_fields: ["title", "id"]
+            display_fields: ["title"]
             hint: "this is a reorder widget with custom control"
 
   - label: Setting
