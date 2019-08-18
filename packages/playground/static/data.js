@@ -12,15 +12,15 @@ const homeContent = {
     },
   ],
   featured: [
-    // {
-    //   id: 'post-Rarn0He12',
-    // },
-    // {
-    //   id: 'post-Rarn0HeUo',
-    // },
-    // {
-    //   id: 'post-mfYTWoPYN',
-    // },
+    {
+      id: 'post-Rarn0He12',
+    },
+    {
+      id: 'post-Rarn0HeUo',
+    },
+    {
+      id: 'post-mfYTWoPYN',
+    },
   ]
 }
 
@@ -72,14 +72,14 @@ export default {
     }
   },
   '_posts': {
-    // 'hello.md': {
-    //   'content': post1
-    // },
-    // 'hi.md': {
-    //   'content': post2
-    // },
-    // 'ha.md': {
-    //   'content': post3
-    // }
+    'hello.md': {
+      'content': post1
+    },
+    'hi.md': {
+      'content': post2
+    },
+    'ha.md': {
+      'content': post3
+    }
   }
 }

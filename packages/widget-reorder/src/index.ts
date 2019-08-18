@@ -1,5 +1,5 @@
 import { createControl } from './control'
-import { Preview } from './preview'
+import { Preview, usePreviewData } from './preview'
 
 const Control = createControl()
 
@@ -14,4 +14,5 @@ export {
   Control,
   Preview,
   createControl,
+  usePreviewData,
 }

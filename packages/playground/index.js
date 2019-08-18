@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { render } from 'react-dom'
 import cms from 'netlify-cms-app'
 import { Widget as IdWidget } from '@ncwidgets/id'
-import { Widget as ReorderWidget, createControl } from '@ncwidgets/reorder'
+import { Widget as ReorderWidget, createControl, usePreviewData } from '@ncwidgets/reorder'
 import { Widget as FileRelationWidget } from '@ncwidgets/file-relation'
 import repoData from './static/data'
 
@@ -19,13 +19,17 @@ const ListComponent = ({ item }) => (
   </>
 )
 
-const CustomReorderPreview = ({ value }) => (
-  <section>
-    <hr />
-    <p>Custom Widget Preview</p>
-    {value.map((item, i) => <p key={i}>{item.get('title')}</p>)}
-  </section>
-)
+const CustomReorderPreview = (props) => {
+  const data = usePreviewData(props)
+
+  if (!data) return <div>loading...</div>
+  return (
+    <section>
+      <hr />
+      <p>Custom Widget Preview</p>
+      {data.map((item, i) => <p key={i}>{item['title']}</p>)}
+    </section>
+  )}
 
 const CustomReorderControl = createControl({
   renderListItem: ({ item }) => <ListComponent item={item} />

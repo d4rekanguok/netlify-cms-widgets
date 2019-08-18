@@ -2,26 +2,39 @@ import React, { useState, useEffect, useRef } from 'react'
 import { List } from 'immutable'
 import { createWidgetId, extract } from './utils'
 
-export const Preview = ({ value, field }) => {
-  const [data, setData] = useState<null | Record<any, any>>(null)
+export const usePreviewData = ({ value, field }) => {
+  const [data, setData] = useState<Record<any, any>>({})
+  const [fetched, setFetched] = useState<boolean>(false)
   const widgetId = useRef<string>(createWidgetId(field))
-
   const fieldId: string = field.get('id_field')
-  const fieldDisplay: List<string> = field.get('display_fields')
 
-  // Fetch initial data from sessionStorage
   useEffect(() => {
     const normalizedData = sessionStorage.getItem(widgetId.current)
-    if (normalizedData) setData(JSON.parse(normalizedData))
+    if (normalizedData) {
+      setData(JSON.parse(normalizedData))
+      setFetched(true)
+    }
   }, [])
 
-  if (!data) return <div>Loading...</div>
+  if (!fetched) return null
+
+  const orderedData = value.map(item => {
+    const id = item.get(fieldId)
+    return data[id]
+  })
+
+  return orderedData
+}
+
+export const Preview = ({ value, field }) => {
+  const orderedData = usePreviewData({ value, field })
+  const fieldDisplay: List<string> = field.get('display_fields')
+
+  if (!orderedData) return <div>Loading...</div>
   return(
     <ul>
-      {value.map((item, i) => {
-        const sourceItem = data[item.get(fieldId)]
-        const displayData = extract(sourceItem, ...fieldDisplay)
-        if (typeof sourceItem === 'undefined') return <li>Oh no</li>
+      {orderedData.map((item, i) => {
+        const displayData = extract(item, ...fieldDisplay)
         return (
           <li key={`listItem-${i}`}>
             <p>
