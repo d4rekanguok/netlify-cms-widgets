@@ -49,6 +49,7 @@ export const queryData = (props, dispatch) => {
 
   query(forID, collection, [fieldId], '')
     .then(result => {
+      // TODO: replace with normalize-function 
       const fetchedData = result.payload.response.hits.reduce((obj, payload) => {
         const key = payload.data[fieldId]
         obj[key] = { ...extract(payload.data, ...fieldsToBeExtracted) }
@@ -61,4 +62,3 @@ export const queryData = (props, dispatch) => {
       })
   })
 }
-

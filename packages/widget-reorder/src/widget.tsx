@@ -1,35 +1,38 @@
 import React, { useEffect } from 'react'
 import { fromJS } from 'immutable'
-import isEmpty from 'lodash/isEmpty'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 // @ts-ignore
 import { WidgetProps } from '@ncwidgets/common-typings'
-import { reducer } from './Store';
+import { reducer } from './reducer';
 import { queryData, setOrder, handleDragEnd } from './action'
-import { CustomReorderPreview, PreviewContainer, getPreview } from './preview'
+import { renderDefaultPreview, PreviewContainer, getPreview } from './preview'
 
+const initialState = { 
+  data: {},
+  order: [],
+  orderModified: false,
+}
 
-const defaultPreviewItems = items => <CustomReorderPreview items={items}/>
-const defaultControlItem = (item): React.ReactElement => <p>{Object.values(item).join(' ')}</p>
+const renderDefaultControl= (item): React.ReactElement => <p>{Object.values(item).join(' ')}</p>
 
 export interface CreateControlOptions {
-  controlListItem?: (item: Record<string, any>) => React.ReactElement
-  previewListItem?: (items: object[]) => React.ReactElement
+  renderControl?: (item: Record<string, any>) => React.ReactElement
+  renderPreview?: (items: object[]) => React.ReactElement
   name?: string
 }
 
 type CreateWidget = (options: CreateControlOptions) => React.StatelessComponent<WidgetProps>
 
 export const createWidget = ({ 
-  controlListItem = defaultControlItem,
-  previewListItem = defaultPreviewItems,
+  renderControl = renderDefaultControl,
+  renderPreview = renderDefaultPreview,
   name = 'ncw-reorder'
 }) => {
 
   const previewRef = React.createRef<HTMLDivElement>()
 
-  const Control  = (props: WidgetProps) => {
-    const [state, dispatch] = React.useReducer(reducer, { data: {}, order: [], orderModified: false})
+  const Control  = React.forwardRef((props: WidgetProps, ref) => {
+    const [state, dispatch] = React.useReducer(reducer, initialState)
     const { order, data, orderModified } = state
     const { onChange, value } = props
     
@@ -38,14 +41,14 @@ export const createWidget = ({
       queryData(props, dispatch)
     }, [])
 
-    // When order is modified, call @onChange
+    // When order is modified, call onChange
     useEffect(() => {
       if (orderModified) onChange(fromJS(order))
     }, [order])
 
     // When data changes, set order
     useEffect(() => {
-      !isEmpty(data) && setOrder(data, value, dispatch)
+      Object.keys(data).length > 0 && setOrder(data, value, dispatch)
     }, [data])
 
     if (!order || order.length === 0) return <div>loading...</div>
@@ -84,7 +87,7 @@ export const createWidget = ({
                           ...provided.draggableProps.style,
                         }}
                       >
-                        {controlListItem(data[identifier])}
+                        {renderControl(data[identifier])}
                       </div>
                     )}
                   </Draggable>
@@ -94,11 +97,13 @@ export const createWidget = ({
             )}
           </Droppable>
         </DragDropContext>
+
+        { /* Renders preview in splitpane via this component... */ }
         <PreviewContainer myRef={previewRef}>
-          { previewListItem(order.map(identifier => data[identifier])) }
+          { renderPreview(order.map(identifier => data[identifier])) }
         </PreviewContainer>
         </>)
-    }
+    })
 
     return {
       name,

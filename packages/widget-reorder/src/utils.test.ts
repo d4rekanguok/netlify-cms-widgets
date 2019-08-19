@@ -34,7 +34,6 @@ describe('diff', () => {
     const result = diff({
       currentOrder,
       data,
-      key: 'id',
     })
 
     expect(result.modified).toBe(false)
@@ -47,7 +46,6 @@ describe('diff', () => {
     const { newOrder } = diff({
       currentOrder,
       data,
-      key: 'id',
     })
     const lastItem = newOrder[newOrder.length - 1]
     expect(lastItem.id).toBe(4)

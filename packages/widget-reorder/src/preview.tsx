@@ -2,9 +2,17 @@ import React, { ReactNode } from 'react'
 import ReactDOM from 'react-dom'
 
 type Ref = React.RefObject<HTMLDivElement>
+
+interface PreviewContainerProps {
+  myRef: Ref
+  children: ReactNode
+}
+
 export const getPreview = (ref: Ref) => () => <div ref={ref}/>
 
-export const CustomReorderPreview = ({ items }) => (
+export const renderDefaultPreview = (items) => <DefaultPreview items={items}/>
+
+export const DefaultPreview = ({ items }) => (
   <section>
     <hr />
     <p>Default Widget Preview</p>
@@ -12,12 +20,5 @@ export const CustomReorderPreview = ({ items }) => (
   </section>
 )
 
-interface PreviewContainerProps {
-  myRef: Ref
-  children: ReactNode
-}
-
 export const PreviewContainer = ({myRef, children}: PreviewContainerProps) => 
-  myRef && myRef.current 
-    ? ReactDOM.createPortal(children, myRef.current)
-    : <></>
+  myRef && myRef.current && ReactDOM.createPortal(children, myRef.current)

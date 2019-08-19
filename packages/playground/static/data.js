@@ -1,7 +1,15 @@
 const homeContent = {
   title: 'Hello',
-  featuredCustom: ['post-Rarn0He12', 'post-Rarn0HeUo', 'post-mfYTWoPYN'],
-  featured: ['post-Rarn0HeUo', 'post-Rarn0He12', 'post-mfYTWoPYN']
+  featuredCustom: [
+    'post-Rarn0He12',
+    'post-Rarn0HeUo',
+    'post-mfYTWoPYN',
+  ],
+  featured: [
+    'post-Rarn0HeUo',
+    'post-Rarn0He12',
+    'post-mfYTWoPYN',
+  ]
 }
 
 const catContent = {
