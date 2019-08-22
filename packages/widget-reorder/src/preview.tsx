@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 
 type Ref = React.RefObject<HTMLDivElement>
 
-interface PreviewContainerProps {
-  myRef: Ref;
+interface PreviewPortalProps {
+  portalRef: Ref;
   children: ReactNode;
 }
 
@@ -23,5 +23,5 @@ export const DefaultPreview = ({ items }) => (
   </section>
 )
 
-export const PreviewContainer = ({myRef, children}: PreviewContainerProps) => 
-  myRef && myRef.current && ReactDOM.createPortal(children, myRef.current)
+export const PreviewPortal = ({portalRef, children}: PreviewPortalProps) => 
+  portalRef && portalRef.current && ReactDOM.createPortal(children, portalRef.current)

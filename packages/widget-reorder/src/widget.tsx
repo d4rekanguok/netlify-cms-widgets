@@ -3,8 +3,8 @@ import { fromJS, List } from 'immutable'
 import { DropResult } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
 import { normalize, diff, reorder } from './utils'
-import { renderDefaultPreview, PreviewContainer, getPreview } from './preview'
-import { ControlList, ControlDraggableItem, renderDefaultControl } from './control'
+import { renderDefaultPreview, PreviewPortal, getPreview } from './preview'
+import { ControlList, ControlDraggableItem, renderDefaultControl, Modal, Modified } from './control'
 
 export interface ControlProps extends WidgetProps {
   value: List<string>;
@@ -16,7 +16,6 @@ export interface CreateControlOptions {
   name?: string;
 }
 
-// type Modified = 'none' | 'empty' | 'modified'
 type CreateWidget = (options: CreateControlOptions) => React.StatelessComponent<WidgetProps>
 
 
@@ -29,12 +28,10 @@ export const createWidget = ({
   const previewRef = React.createRef<HTMLDivElement>()
 
   const Control: React.FC<ControlProps> = ({ query, forID, value, onChange, field }) => {
-    // const [state, dispatch] = React.useReducer(reducer, initialState)
-    // const { order, data, orderModified } = state
-
     const [data, setData] = useState<Record<string, unknown>>({})
     const [fetched, setFetched] = useState<boolean>(false)
-    // const [modified, setModified] = useState<Modified>('none')
+    const [newOrder, setNewOrder] = useState<string[]>([])
+    const [modified, setModified] = useState<Modified>('none')
 
     const collection: string = field.get('collection')
     const fieldId: string = field.get('id_field')
@@ -51,7 +48,8 @@ export const createWidget = ({
         const idData: string[] = sourceData.map(item => item[fieldId])
 
         if (!value || !value.toJS) {
-          onChange(fromJS(idData))
+          setNewOrder(idData)
+          setModified('empty')
           return
         }
 
@@ -62,12 +60,18 @@ export const createWidget = ({
         })
         
         if (modified) {
-          onChange(fromJS(newOrder))
+          setNewOrder(newOrder)
+          setModified('modified')
         }
       }
 
       fetchData()
     }, [])
+
+    const handleDisplayChange = () => {
+      setModified('none')
+      onChange(fromJS(newOrder))
+    }
 
     const handleDragEnd = (result: DropResult) => {
       if (!result.destination || result.source.index === result.destination.index) return
@@ -84,7 +88,8 @@ export const createWidget = ({
 
     if (!fetched) return <div>loading...</div>
     return (
-      <>
+      <div style={{ position: 'relative' }}>
+        {modified !== 'none' && <Modal {...{ modified, handleDisplayChange }} />}
         {value && <ControlList onDragEnd={handleDragEnd}>
           {
             value.map((id, i) => 
@@ -95,10 +100,11 @@ export const createWidget = ({
         </ControlList>}
         
         { /* Renders preview in splitpane via this component... */ }
-        <PreviewContainer myRef={previewRef}>
+        <PreviewPortal portalRef={previewRef}>
           { renderPreview(value.map(identifier => data[identifier])) }
-        </PreviewContainer>
-        </>)
+        </PreviewPortal>
+      </div>
+    )
   }
 
   return {
