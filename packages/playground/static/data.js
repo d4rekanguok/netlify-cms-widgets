@@ -1,32 +1,14 @@
 const homeContent = {
   title: 'Hello',
   featuredCustom: [
-    {
-      id: 'post-Rarn0He12',
-      title: '안녕 세상',
-    },
-    {
-      id: 'post-Rarn0HeUo',
-      title: 'Hallo Welt',
-    },
-    {
-      id: 'post-mfYTWoPYN',
-      title: 'Hello World',
-    },
+    'post-Rarn0He12',
+    'post-Rarn0HeUo',
+    'post-mfYTWoPYN',
   ],
   featured: [
-    {
-      id: 'post-Rarn0He12',
-      title: '안녕 세상',
-    },
-    {
-      id: 'post-Rarn0HeUo',
-      title: 'Hallo Welt',
-    },
-    {
-      id: 'post-mfYTWoPYN',
-      title: 'Hello World',
-    },
+    'post-Rarn0HeUo',
+    'post-Rarn0He12',
+    'post-mfYTWoPYN',
   ]
 }
 
@@ -68,6 +50,12 @@ title: 안녕 세상
 id: post-Rarn0He12
 ---`
 
+const post4 =
+  `---
+title: Hej världen!
+id: post-HahELOG49
+---`
+
 export default {
   '_data': {
     '_home.json': {
@@ -86,6 +74,9 @@ export default {
     },
     'ha.md': {
       'content': post3
+    },
+    'hej.md': {
+      'content': post4
     }
   }
 }

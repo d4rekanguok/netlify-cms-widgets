@@ -1,126 +1,165 @@
-import * as React from 'react'
-import { fromJS, List } from 'immutable'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
+import React from 'react'
+import { createPortal } from 'react-dom'
+import { fromJS, List, Map as ImmutableMap } from 'immutable'
+import { DropResult } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
+import { normalize, diff, reorder } from './utils'
+import {
+  ControlList, 
+  ControlDraggableItem, 
+} from './components/drag-drop'
+import {
+  Modal, 
+  Modified, 
+  EmptyMessage,
+} from './components/modal'
+import { parseTemplate } from './utils'
 
-import { reorder, diff, extract } from './utils'
 
-const defaultListItem = item => Object.values(item).join(' ')
-
-export interface CreateControlOptions {
-  renderListItem?: (item: object) => React.ComponentType<{ item: Record<string, any> }>;
+interface PreviewPortalProps {
+  portalRef: React.RefObject<HTMLDivElement>;
+  children: React.ReactNode;
 }
 
-type CreateControl = (options?: CreateControlOptions) => React.ComponentClass<WidgetProps>
+export const PreviewPortal = ({portalRef, children}: PreviewPortalProps) => 
+  portalRef && portalRef.current && createPortal(children, portalRef.current)
 
-export const createControl: CreateControl = (options = {}) => {
-  const renderListItem = options.renderListItem || defaultListItem
-  
-  return class Control extends React.Component<WidgetProps> {
+export interface RenderControlProps {
+  value: any;
+  field: ImmutableMap<any, any>;
+}
 
-    public state = {
-      data: [],
+export type RenderControl = (props: RenderControlProps) => React.ReactNode;
+
+export const renderDefaultControl = ({ value, field }) => {
+  const fieldId = field.get('id_field')
+  const template = field.get('display_template', `{{${fieldId}}}`)
+  return parseTemplate({ template, data: value })
+}
+
+export interface ControlProps extends WidgetProps {
+  value: List<string>;
+}
+
+export interface ControlState {
+  data: Record<string, any>;
+  fetched: boolean;
+  newOrder: string[];
+  modified: Modified;
+}
+
+export const createControl = ({ 
+  renderControl,
+  renderPreview,
+  previewRef
+}) => {
+  return class Control extends React.Component<ControlProps, ControlState> {
+    public state: ControlState = {
+      data: {},
+      fetched: false,
+      newOrder: [],
+      modified: 'none'
     }
 
     public async componentDidMount() {
-      const { query, forID, value, field, onChange } = this.props
-
+      const { forID, field, value, query } = this.props
       const collection: string = field.get('collection')
       const fieldId: string = field.get('id_field')
-      const fieldDisplay: List<string> = field.get('display_fields')
-      const fieldsToBeExtracted = Array.from(new Set([fieldId, ...fieldDisplay.toJS()]))
+
+      // no value or empty value, assuming value is always a List<string>
+      const noValue = (typeof value === 'undefined' || value.size === 0) 
 
       const result = await query(forID, collection, [fieldId], '')
-      const data = result.payload.response.hits.map(payload => {
-        return extract(payload.data, ...fieldsToBeExtracted)
-      })
+      const sourceData = result.payload.response.hits.map(payload => payload.data)
+      // @ts-ignore
+      const normalizedData = normalize(sourceData, fieldId)
+      this.setState({ data: normalizedData, fetched: true })
 
-      if (!value || !value.toJS) {
-        onChange(fromJS(data))
-        this.setState({ data })
+      const idData: string[] = sourceData.map(item => item[fieldId])
+
+      if (noValue) {
+        this.setState({ newOrder: idData, modified: 'unset' })
         return
       }
 
       const currentOrder = value.toJS()
       const { newOrder, modified } = diff({
         currentOrder,
-        data,
-        key: fieldId,
+        data: idData,
       })
-      this.setState({ data: newOrder })
-      if (modified) onChange(fromJS(newOrder))
+    
+      if (modified) {
+        this.setState({ newOrder, modified: 'modified' })
+      }
     }
 
-    public handleDragEnd = result => {
+    public handleDisplayChange = () => {
+      const { newOrder } = this.state
       const { onChange } = this.props
+      this.setState({ modified: 'none' }, () => {
+        onChange(fromJS(newOrder))
+      })
+    }
 
-      if (!result.destination) return
+    public handleDragEnd = (result: DropResult) => {
+      if (
+        !result.destination || 
+      result.source.index === result.destination.index
+      ) return
 
-      const { data } = this.state
-      const sortedData = reorder(
+      const { value, onChange } = this.props
+      const data = value.toJS()
+
+      const sortedData = reorder({
         data,
-        result.source.index,
-        result.destination.index
-      )
-
-      this.setState({
-        data: sortedData,
+        startIndex: result.source.index,
+        endIndex: result.destination.index
       })
 
       onChange(fromJS(sortedData))
     }
 
     public render() {
-      const { field } = this.props
-      const { data } = this.state
-  
-      const fieldId: string = field.get('id_field')
+      const { field, value, classNameWrapper } = this.props
+      const { modified, data, fetched } = this.state
 
-      if (data.length === 0) return <div>loading...</div>
+      const collection: string = field.get('collection')
+      const maxHeight: string = field.get('max_height', 'none')
+
+      const noValue = (typeof value === 'undefined' || value.size === 0) 
+
+      if (!fetched) return <div>loading...</div>
+      if (fetched && Object.keys(data).length === 0) {
+        return (
+          <EmptyMessage className={classNameWrapper} collection={collection} />
+        )
+      }
       return (
-        <DragDropContext onDragEnd={this.handleDragEnd}>
-          <Droppable droppableId="droppable">
-            {(provided, snapshot) => (
-              <div
-                style={{
-                  padding: '1rem',
-                  background: snapshot.isDraggingOver ? 'lightblue' : '#dfdfe3',
-                  borderRadius: '3px',
-                }}
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-              >
-                {data.map((item, i) => (
-                  <Draggable
-                    key={item[fieldId]}
-                    draggableId={item[fieldId]}
-                    index={i}
-                  >
-                    {(provided, snapshot) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        style={{
-                          padding: '1rem',
-                          opacity: snapshot.isDragging ? 0.6 : 1,
-                          boxShadow: snapshot.isDragging ?  '0 4px 16px 0 rgba(0,0,0,0.2)' : '0 2px 6px 0 rgba(0,0,0,0.2)',
-                          background: '#fff',
-                          borderRadius: '3px',
-                          marginBottom: '0.5rem',
-                          ...provided.draggableProps.style,
-                        }}
-                      >
-                        {renderListItem(item)}
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <div style={{ position: 'relative', minHeight: '12rem' }}>
+          {modified !== 'none' && <Modal handleDisplayChange={this.handleDisplayChange} {...{ collection, modified }} />}
+          {!noValue && <ControlList onDragEnd={this.handleDragEnd} maxHeight={maxHeight}>
+            {
+              value.map((id, i) => {
+                const item = data[id]
+                const value = (typeof item === 'undefined')
+                  ? { error: 'Entry does not exist' }
+                // @ts-ignore
+                  : item
+                return (
+                  <ControlDraggableItem key={id} identifier={id} index={i}>
+                    {renderControl({ value, field })}
+                  </ControlDraggableItem>)
+              })
+            }
+          </ControlList>}
+        
+          { /* Renders preview in splitpane via this component... */ }
+          <PreviewPortal portalRef={previewRef}>
+            {!noValue && renderPreview({
+              value: value.map(identifier => data[identifier])
+            }) }
+          </PreviewPortal>
+        </div>
       )
     }
   }

@@ -1,24 +1,17 @@
-import differenceBy = require('lodash/differenceBy')
-
-export const extract = <T, K extends keyof T>(object: T, ...keys: K[]): Pick<T, K> =>
-  keys.reduce((result, key) => {
-    result[key] = object[key]
-    return result
-  }, {} as Pick<T, K>)
+import difference = require('lodash/difference')
+import get = require('lodash/get')
 
 export const removeOutdatedItem = <T>(
   data: T[],
   outdated: T[],
-  key: keyof T
 ): T[] =>
   data.filter(item => {
-    return !outdated.some(outdatedItem => outdatedItem[key] === item[key])
+    return !outdated.includes(item)
   })
 
 interface DiffArgs<T> {
   currentOrder: T[];
   data: T[];
-  key: keyof T;
 }
 
 interface DiffResult<T> {
@@ -29,10 +22,10 @@ interface DiffResult<T> {
 export const diff = <T>({
   currentOrder,
   data,
-  key,
 }: DiffArgs<T>): DiffResult<T> => {
-  const outdatedItem = differenceBy(currentOrder, data, key)
-  const newItem = differenceBy(data, currentOrder, key)
+  const outdatedItem = difference(currentOrder, data)
+  const newItem = difference(data, currentOrder)
+
   if (outdatedItem.length === 0 && newItem.length === 0) {
     return {
       modified: false,
@@ -40,7 +33,7 @@ export const diff = <T>({
     }
   }
 
-  const newOrder = removeOutdatedItem(currentOrder, outdatedItem, key).concat(
+  const newOrder = removeOutdatedItem(currentOrder, outdatedItem).concat(
     newItem
   )
   return {
@@ -49,10 +42,52 @@ export const diff = <T>({
   }
 }
 
-export const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list)
+export const reorder = ({ data, startIndex, endIndex }) => {
+  const result = Array.from(data)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)
 
   return result
+}
+
+export const normalize = <T, K extends keyof T>(data: T[], key: K): Record<string, T> => 
+  data.reduce((result, item) => {
+    const id = String(item[key])
+    result[id] = item
+    return result
+  }, ({} as Record<string, T>))
+
+
+interface TemplateParserArgs {
+  template: string;
+  data: any;
+}
+
+export const parseTemplate = ({ template, data }: TemplateParserArgs): string => {
+  const indicators = ['{{', '}}']
+  const parsed: string[] = []
+  let _template = template
+  let count = 0
+  const parse = () => {
+    const indicator = indicators[count % 2]
+    const openIndex = _template.indexOf(indicator)
+    if (openIndex === -1) {
+      parsed.push(_template)
+      return
+    }
+
+    const first = _template.substring(0, openIndex)
+    const value = (count % 2 === 1)
+      ? get(data, first, 'not found')
+      : first
+    parsed.push(value)
+
+    count++
+    const nextIndex = openIndex + indicator.length
+    _template = _template.substring(nextIndex)
+    parse()
+  }
+
+  parse()
+  return parsed.join('')
 }

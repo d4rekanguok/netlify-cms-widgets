@@ -1,17 +1,26 @@
-import { createControl } from './control'
-import { Preview } from './preview'
+import * as React from 'react'
+import { renderDefaultControl, createControl, RenderControl } from './control'
+import { renderDefaultPreview, createPreview, RenderPreview } from './preview'
 
-const Control = createControl()
-
-const Widget = {
-  name: 'ncw-reorder',
-  controlComponent: Control,
-  previewComponent: Preview,
+export interface CreateWidgetOptions {
+  renderControl?: RenderControl;
+  renderPreview?: RenderPreview;
+  name?: string;
 }
 
-export {
-  Widget,
-  Control,
-  Preview,
-  createControl,
+const createWidget = ({ 
+  renderControl = renderDefaultControl,
+  renderPreview = renderDefaultPreview,
+  name = 'ncw-reorder'
+}: CreateWidgetOptions) => {
+  const previewRef = React.createRef<HTMLDivElement>()
+  return {
+    name,
+    controlComponent: createControl({ renderControl, renderPreview, previewRef }),
+    previewComponent: createPreview(previewRef),
+  }
 }
+
+const Widget = createWidget({})
+
+export { createWidget, Widget }
