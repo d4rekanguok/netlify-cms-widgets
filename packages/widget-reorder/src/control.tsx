@@ -40,20 +40,26 @@ export const ControlDraggableItem = ({ identifier, index, children }) =>
 
 interface StyledDroppableProps {
   isDraggingOver: boolean;
+  maxHeight: string;
 }
 
 const StyledDroppable = styled.div<StyledDroppableProps>`
+  position: relative;
   padding: 1rem;
   background-color: ${({ isDraggingOver }) => isDraggingOver ? 'lightblue' : '#dfdfe3'};
   border-radius: 3px;
+  overflow-y: scroll;
+  max-height: ${({ maxHeight }) => maxHeight};
+  border: 2px solid #dfdfe3;
 `
 
-export const ControlList = ({ onDragEnd, children }) => 
+export const ControlList = ({ onDragEnd, children, maxHeight }) => 
   <DragDropContext onDragEnd={(result: DropResult) => onDragEnd(result)}>
     <Droppable droppableId="droppable">
       {(provided, snapshot) => (
         <StyledDroppable
           ref={provided.innerRef}
+          maxHeight={maxHeight}
           isDraggingOver={snapshot.isDraggingOver}
           {...provided.droppableProps}
         >
@@ -97,6 +103,7 @@ const StyledOverlay = styled.div`
   width: 100%;
   height: 100%;
   background-color: rgba(223, 223, 227, 0.8);
+  z-index: 100;
 `
 
 export type Modified = 'none' | 'unset' | 'modified'

@@ -72,9 +72,9 @@ export default {
     'hi.md': {
       'content': post2
     },
-    // 'ha.md': {
-    //   'content': post3
-    // },
+    'ha.md': {
+      'content': post3
+    },
     'hej.md': {
       'content': post4
     }

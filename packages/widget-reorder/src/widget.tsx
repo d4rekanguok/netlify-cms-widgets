@@ -41,6 +41,7 @@ export const createWidget = ({
     const collection: string = field.get('collection')
     const fieldId: string = field.get('id_field')
     const displayFields: List<string> = field.get('display_fields')
+    const maxHeight: string = field.get('max_height') || 'none'
 
     // no value or empty value, assuming value is always a List<string>
     const noValue = (typeof value === 'undefined' || value.size === 0) 
@@ -108,7 +109,7 @@ export const createWidget = ({
     return (
       <div style={{ position: 'relative', minHeight: '12rem' }}>
         {modified !== 'none' && <Modal {...{ collection, modified, handleDisplayChange }} />}
-        {!noValue && <ControlList onDragEnd={handleDragEnd}>
+        {!noValue && <ControlList onDragEnd={handleDragEnd} maxHeight={maxHeight}>
           {
             value.map((id, i) => {
               const item = data[id]
