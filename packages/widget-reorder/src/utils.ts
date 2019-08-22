@@ -1,12 +1,6 @@
 import difference = require('lodash/difference')
 import get = require('lodash/get')
 
-export const extract = <T, K extends keyof T>(object: T, ...keys: K[]): Pick<T, K> =>
-  keys.reduce((result, key) => {
-    result[key] = object[key]
-    return result
-  }, {} as Pick<T, K>)
-
 export const removeOutdatedItem = <T>(
   data: T[],
   outdated: T[],
