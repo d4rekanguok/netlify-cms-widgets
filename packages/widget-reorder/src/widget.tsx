@@ -23,8 +23,6 @@ export interface CreateControlOptions {
   name?: string;
 }
 
-type CreateWidget = (options: CreateControlOptions) => React.StatelessComponent<WidgetProps>
-
 export const createWidget = ({ 
   renderControl = renderDefaultControl,
   renderPreview = renderDefaultPreview,

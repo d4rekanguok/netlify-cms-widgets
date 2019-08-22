@@ -8,7 +8,7 @@ interface PreviewPortalProps {
   children: ReactNode;
 }
 
-export const getPreview = (ref: Ref) => () => <div ref={ref}/>
+export const getPreview = (ref: Ref): React.FC => () => <div ref={ref}/>
 
 export const renderDefaultPreview = (items) => <DefaultPreview items={items}/>
 
