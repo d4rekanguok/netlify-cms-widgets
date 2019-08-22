@@ -4,8 +4,8 @@ import ReactDOM from 'react-dom'
 type Ref = React.RefObject<HTMLDivElement>
 
 interface PreviewContainerProps {
-  myRef: Ref
-  children: ReactNode
+  myRef: Ref;
+  children: ReactNode;
 }
 
 export const getPreview = (ref: Ref) => () => <div ref={ref}/>

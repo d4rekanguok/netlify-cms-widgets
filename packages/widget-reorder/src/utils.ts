@@ -9,7 +9,7 @@ export const extract = <T, K extends keyof T>(object: T, ...keys: K[]): Pick<T, 
 export const removeOutdatedItem = <T>(
   data: T[],
   outdated: T[],
-  ): T[] =>
+): T[] =>
   data.filter(item => {
     return !outdated.includes(item)
   })

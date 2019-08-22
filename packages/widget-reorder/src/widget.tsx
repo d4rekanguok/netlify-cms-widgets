@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
 import { fromJS } from 'immutable'
 import { DropResult } from 'react-beautiful-dnd'
-// @ts-ignore
 import { WidgetProps } from '@ncwidgets/common-typings'
-import { reducer } from './reducer';
+import { reducer } from './reducer'
 import { queryData, setOrder, handleDragEnd } from './action'
 import { renderDefaultPreview, PreviewContainer, getPreview } from './preview'
 import { ControlList, ControlDraggableItem, renderDefaultControl } from './control'
@@ -15,9 +14,9 @@ const initialState = {
 }
 
 export interface CreateControlOptions {
-  renderControl?: (item: Record<string, any>) => React.ReactElement
-  renderPreview?: (items: object[]) => React.ReactElement
-  name?: string
+  renderControl?: (item: Record<string, any>) => React.ReactElement;
+  renderPreview?: (items: object[]) => React.ReactElement;
+  name?: string;
 }
 
 type CreateWidget = (options: CreateControlOptions) => React.StatelessComponent<WidgetProps>
@@ -30,7 +29,7 @@ export const createWidget = ({
 
   const previewRef = React.createRef<HTMLDivElement>()
 
-  const Control  = React.forwardRef((props: WidgetProps, ref) => {
+  const Control: React.FC<WidgetProps> = (props) => {
     const [state, dispatch] = React.useReducer(reducer, initialState)
     const { order, data, orderModified } = state
     const { onChange, value } = props
@@ -56,7 +55,7 @@ export const createWidget = ({
         <ControlList onDragEnd={((result: DropResult) => handleDragEnd(result, order, dispatch))}>
           {
             order.map((id, i) => 
-              <ControlDraggableItem identifier={id} index={i}>
+              <ControlDraggableItem key={id} identifier={id} index={i}>
                 {renderControl(data[id])}
               </ControlDraggableItem>)
           }
@@ -67,11 +66,11 @@ export const createWidget = ({
           { renderPreview(order.map(identifier => data[identifier])) }
         </PreviewContainer>
         </>)
-    })
-
-    return {
-      name,
-      controlComponent: Control,
-      previewComponent: getPreview(previewRef),
-    }
   }
+
+  return {
+    name,
+    controlComponent: Control,
+    previewComponent: getPreview(previewRef),
+  }
+}

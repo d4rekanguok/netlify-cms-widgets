@@ -3,15 +3,15 @@ import { extract, diff, reorder } from './utils'
 import { ReorderAction as _ } from './action.types'
 import { DropResult } from 'react-beautiful-dnd'
 
-export const handleDragEnd = (result: DropResult, prevOrder: String[], dispatch) => {
-    if (!result.destination || result.destination.index === result.source.index) return
+export const handleDragEnd = (result: DropResult, prevOrder: string[], dispatch) => {
+  if (!result.destination || result.destination.index === result.source.index) return
 
-    const newOrder = reorder(
-      prevOrder,
-      result.source.index,
-      result.destination.index
-    )
-    dispatch({ type: _.ORDER_DATA, payload: { order: newOrder, orderModified: true }})
+  const newOrder = reorder(
+    prevOrder,
+    result.source.index,
+    result.destination.index
+  )
+  dispatch({ type: _.ORDER_DATA, payload: { order: newOrder, orderModified: true }})
 }
 
 export const setOrder = (data, value, dispatch) => {
@@ -60,5 +60,5 @@ export const queryData = (props, dispatch) => {
         type: _.QUERY_DATA, 
         payload: { data: fetchedData } 
       })
-  })
+    })
 }
