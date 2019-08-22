@@ -99,6 +99,12 @@ const StyledModal = styled.div`
     background: #fff;
     border-radius: 6px;
   }
+
+  button:hover {
+    border: 1px solid rgb(23, 162, 184);
+    background: rgb(23, 162, 184);
+    color: #fff;
+  }
 `
 
 const StyledOverlay = styled.div`
