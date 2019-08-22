@@ -1,5 +1,11 @@
 import React, { ReactNode } from 'react'
-import ReactDOM from 'react-dom'
+import { List } from 'immutable'
+
+export interface RenderPreviewProps {
+  value: List<any>;
+  field: Map<any, any>;
+}
+export type RenderPreview = (props: RenderPreviewProps) => React.ReactNode;
 
 type Ref = React.RefObject<HTMLDivElement>
 
@@ -9,10 +15,9 @@ interface PreviewPortalProps {
 }
 
 export const createPreview = (ref: Ref): React.FC => () => <div ref={ref}/>
-
 export const renderDefaultPreview = ({ value }) => <DefaultPreview items={value}/>
 
-export const DefaultPreview = ({ items }) => (
+const DefaultPreview = ({ items }) => (
   <section>
     <hr />
     <p>Default Widget Preview</p>
@@ -22,6 +27,3 @@ export const DefaultPreview = ({ items }) => (
     })}
   </section>
 )
-
-export const PreviewPortal = ({portalRef, children}: PreviewPortalProps) => 
-  portalRef && portalRef.current && ReactDOM.createPortal(children, portalRef.current)
