@@ -28,8 +28,8 @@ const CustomReorderPreview = ({ items }) => (
 )
 
 const CustomReorderWidget = createWidget({
-  controlListItem: ({ value }) => <ListComponent item={value} />,
-  previewListItem: ({ value }) => <CustomReorderPreview items={value}/>,
+  renderControl: ({ value }) => <ListComponent item={value} />,
+  renderPreview: ({ value }) => <CustomReorderPreview items={value}/>,
   name: 'custom-reorder'
 })
 
