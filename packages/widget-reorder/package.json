@@ -1,6 +1,6 @@
 {
   "name": "@ncwidgets/reorder",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Netlify custom widget reorder",
   "main": "./dist/index.js",
   "keywords": [],
