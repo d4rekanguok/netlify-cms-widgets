@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { fromJS, List } from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import { DropResult } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
-import { normalize, diff, reorder, extract } from './utils'
+import { normalize, diff, reorder } from './utils'
 import { renderDefaultPreview, PreviewPortal, getPreview } from './preview'
 import { 
   ControlList, 
@@ -17,9 +17,19 @@ export interface ControlProps extends WidgetProps {
   value: List<string>;
 }
 
+export interface RenderControlProps {
+  value: any;
+  field: Map<any, any>;
+}
+
+export interface RenderPreviewProps {
+  value: List<any>;
+  field: Map<any, any>;
+}
+
 export interface CreateControlOptions {
-  renderControl?: (item: Record<string, any>) => React.ReactElement;
-  renderPreview?: (items: object[]) => React.ReactElement;
+  renderControl?: (props: RenderControlProps) => React.ReactElement;
+  renderPreview?: (props: RenderPreviewProps) => React.ReactElement;
   name?: string;
 }
 
@@ -40,8 +50,7 @@ export const createWidget = ({
 
     const collection: string = field.get('collection')
     const fieldId: string = field.get('id_field')
-    const displayFields: List<string> = field.get('display_fields')
-    const maxHeight: string = field.get('max_height') || 'none'
+    const maxHeight: string = field.get('max_height', 'none')
 
     // no value or empty value, assuming value is always a List<string>
     const noValue = (typeof value === 'undefined' || value.size === 0) 
@@ -113,13 +122,13 @@ export const createWidget = ({
           {
             value.map((id, i) => {
               const item = data[id]
-              const displayData = (typeof item === 'undefined')
+              const value = (typeof item === 'undefined')
                 ? { error: 'Entry does not exist' }
                 // @ts-ignore
-                : extract(data[id], ...displayFields)
+                : item
               return (
                 <ControlDraggableItem key={id} identifier={id} index={i}>
-                  {renderControl(displayData)}
+                  {renderControl({ value, field })}
                 </ControlDraggableItem>)
             })
           }
@@ -127,7 +136,9 @@ export const createWidget = ({
         
         { /* Renders preview in splitpane via this component... */ }
         <PreviewPortal portalRef={previewRef}>
-          {!noValue && renderPreview(value.map(identifier => data[identifier])) }
+          {!noValue && renderPreview({
+            value: value.map(identifier => data[identifier])
+          }) }
         </PreviewPortal>
       </div>
     )

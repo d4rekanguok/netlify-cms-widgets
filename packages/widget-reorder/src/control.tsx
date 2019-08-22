@@ -1,9 +1,12 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
+import { parseTemplate } from './utils'
 
-export const renderDefaultControl = (item): React.ReactElement => {
-  return <p>{Object.values(item).join(' ')}</p>
+export const renderDefaultControl = ({ value, field }) => {
+  const fieldId = field.get('id_field')
+  const template = field.get('display_template', `{{${fieldId}}}`)
+  return parseTemplate({ template, data: value })
 }
 
 interface StyledDraggableProps {

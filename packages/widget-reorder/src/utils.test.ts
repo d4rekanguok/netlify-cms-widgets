@@ -1,4 +1,4 @@
-import { removeOutdatedItem, diff, extract, normalize } from './utils'
+import { removeOutdatedItem, diff, extract, normalize, parseTemplate } from './utils'
 
 describe('removeOutdatedItem', () => {
   it('should remove outdated items', () => {
@@ -81,5 +81,30 @@ describe('normalize', () => {
 
     expect(result).toEqual(expected)
     expect(result.a).toBe(data[0])
+  })
+})
+
+describe('parseTemplate', () => {
+  it('should turn template into an array of string without indicators', () => {
+    const template = 'hello {{friend}}, my name is {{cat[0]}}'
+    const data = {
+      friend: 'D',
+      cat: ['Jan', 'Eri']
+    }
+    const expected = 'hello D, my name is Jan'
+    const result = parseTemplate({ template, data })
+
+    expect(result).toEqual(expected)
+  })
+
+  it('should leave string after closed bracket', () => {
+    const template = 'hello {{friend}} | hi'
+    const data = {
+      friend: 'D',
+    }
+    const expected = 'hello D | hi'
+    const result = parseTemplate({ template, data })
+
+    expect(result).toEqual(expected)
   })
 })

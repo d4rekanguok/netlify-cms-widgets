@@ -10,7 +10,7 @@ interface PreviewPortalProps {
 
 export const getPreview = (ref: Ref): React.FC => () => <div ref={ref}/>
 
-export const renderDefaultPreview = (items) => <DefaultPreview items={items}/>
+export const renderDefaultPreview = ({ value }) => <DefaultPreview items={value}/>
 
 export const DefaultPreview = ({ items }) => (
   <section>
