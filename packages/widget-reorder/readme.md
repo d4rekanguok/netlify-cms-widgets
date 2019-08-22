@@ -1,6 +1,6 @@
 <h1 align="center">Reorder Widget for NetlifyCMS</h1>
 
-<p align="center">A widget for <a href="https://www.netlifycms.org/" target="_blank">netlify-cms</a> to handle custom ordering of a referenced collection.</p>
+<p align="center">A widget for <a href="https://www.netlifycms.org/" target="_blank">netlify-cms</a> to handle custom ordering of a referenced collection. Powered by <a href="https://github.com/atlassian/react-beautiful-dnd">react-beautiful-dnd</a></p>
 
 ---
 
@@ -30,12 +30,14 @@ Assuming that `posts` are a separate collection that contains fields `id` and `t
   widget: ncw-reorder
   collection: posts
   id_field: id
-  display_fields: ['title']
+  display_template: '{{id}} | {{title}}'
 ```
 #### Widget specific fields
 * `collection` (**required**) is the name of the referenced collection.
 * `id_field` (**required**) is a field in the referenced collection which has to be an unique identifier.
-* `display_fields` (**required**) list of one ore more fields from the referenced collection to be displayed.
+* `display_template` A string template with fields of the target entry. Use dot notation for nested fields & bracket for array: `{{address.zipCode}} | {{categories[0]}}`
+
+
 <p>Read more about configuration options on <a href='https://www.netlifycms.org/docs/configuration-options/'  target="_blank">netlifyCMS</a>.</p>
 
 ### Register default reorder-component
@@ -52,7 +54,7 @@ cms.init()
 
 ```js
 import cms from 'netlify-cms-app'
-import { createControl } from '@ncwidgets/reorder'
+import { createWidget } from '@ncwidgets/reorder'
 
 const ListComponent = ({ item }) => (
   <>
@@ -61,23 +63,23 @@ const ListComponent = ({ item }) => (
   </>
 )
 
-const CustomReorderPreview = ({ value }) => (
+const CustomReorderPreview = ({ items }) => (
   <section>
     <hr />
     <p>Custom Widget Preview</p>
-    {value.map((item, i) => <p key={i}>{item.get('title')}</p>)}
+    {items.map((item, i) => <p key={i}>{item.title}</p>)}
   </section>
 )
 
-const CustomReorderControl = createControl({
-  renderListItem: item => <ListComponent item={item} />
+const customReorderWidget = createWidget({
+  renderControl: ({ value }) => <ListComponent item={value} />,
+  renderPreview: ({ value }) => <CustomReorderPreview items={value}/>,
 })
 
 cms.registerWidget({
-    name: 'custom-reorder', // Remember to change the name in config as well
-    controlComponent: CustomReorderControl,
-    previewComponent: CustomReorderPreview,
-  })
+  name: 'custom-reorder',
+  ...customReorderWidget,
+})
 
 cms.init()
 ```

@@ -5,22 +5,22 @@ import { renderDefaultPreview, createPreview, RenderPreview } from './preview'
 export interface CreateWidgetOptions {
   renderControl?: RenderControl;
   renderPreview?: RenderPreview;
-  name?: string;
 }
 
 const createWidget = ({ 
   renderControl = renderDefaultControl,
   renderPreview = renderDefaultPreview,
-  name = 'ncw-reorder'
 }: CreateWidgetOptions) => {
   const previewRef = React.createRef<HTMLDivElement>()
   return {
-    name,
     controlComponent: createControl({ renderControl, renderPreview, previewRef }),
     previewComponent: createPreview(previewRef),
   }
 }
 
-const Widget = createWidget({})
+const Widget = {
+  name: 'ncw-reorder',
+  ...createWidget({})
+}
 
 export { createWidget, Widget }

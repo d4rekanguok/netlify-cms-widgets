@@ -7,14 +7,7 @@ export interface RenderPreviewProps {
 }
 export type RenderPreview = (props: RenderPreviewProps) => React.ReactNode;
 
-type Ref = React.RefObject<HTMLDivElement>
-
-interface PreviewPortalProps {
-  portalRef: Ref;
-  children: ReactNode;
-}
-
-export const createPreview = (ref: Ref): React.FC => () => <div ref={ref}/>
+export const createPreview = (ref: React.RefObject<HTMLDivElement>): React.FC => () => <div ref={ref}/>
 export const renderDefaultPreview = ({ value }) => <DefaultPreview items={value}/>
 
 const DefaultPreview = ({ items }) => (

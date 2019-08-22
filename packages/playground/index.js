@@ -27,10 +27,9 @@ const CustomReorderPreview = ({ items }) => (
   </section>
 )
 
-const CustomReorderWidget = createWidget({
+const customReorderWidget = createWidget({
   renderControl: ({ value }) => <ListComponent item={value} />,
   renderPreview: ({ value }) => <CustomReorderPreview items={value}/>,
-  name: 'custom-reorder'
 })
 
 const CMS = () => {
@@ -39,7 +38,10 @@ const CMS = () => {
 
     cms.registerWidget(IdWidget)
     cms.registerWidget(ReorderWidget)
-    cms.registerWidget(CustomReorderWidget)
+    cms.registerWidget({
+      name: 'custom-reorder',
+      ...customReorderWidget,
+    })
     cms.registerWidget(FileRelationWidget)
     cms.registerPreviewStyle('./preview.css')
     cms.init()
