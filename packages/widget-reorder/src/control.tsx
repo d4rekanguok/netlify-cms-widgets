@@ -100,14 +100,14 @@ const StyledOverlay = styled.div`
   background-color: rgba(223, 223, 227, 0.8);
 `
 
-export type Modified = 'none' | 'empty' | 'modified'
+export type Modified = 'none' | 'unset' | 'modified'
 
 const modalContent: Record<Modified, Record<'title' | 'action', string>> = {
   none: {
     title: '',
     action: '',
   },
-  empty: {
+  unset: {
     title: 'Order hasn\'t been set yet',
     action: 'Start Ordering'
   },

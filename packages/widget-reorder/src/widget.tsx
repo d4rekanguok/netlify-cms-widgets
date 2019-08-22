@@ -36,6 +36,9 @@ export const createWidget = ({
     const collection: string = field.get('collection')
     const fieldId: string = field.get('id_field')
 
+    // no value or empty value, assuming value is always a List<string>
+    const noValue = (typeof value === 'undefined' || value.size === 0) 
+
     useEffect(() => {
       const fetchData = async () => {
         const result = await query(forID, collection, [fieldId], '')
@@ -47,9 +50,9 @@ export const createWidget = ({
 
         const idData: string[] = sourceData.map(item => item[fieldId])
 
-        if (!value || !value.toJS) {
+        if (noValue) {
           setNewOrder(idData)
-          setModified('empty')
+          setModified('unset')
           return
         }
 
@@ -74,7 +77,11 @@ export const createWidget = ({
     }
 
     const handleDragEnd = (result: DropResult) => {
-      if (!result.destination || result.source.index === result.destination.index) return
+      if (
+        !result.destination || 
+        result.source.index === result.destination.index
+      ) return
+
       const data = value.toJS()
 
       const sortedData = reorder({
@@ -87,10 +94,16 @@ export const createWidget = ({
     }
 
     if (!fetched) return <div>loading...</div>
+    if (fetched && Object.keys(data).length === 0) {
+      return <div>
+        <h1>Collection &apos;{collection}&apos; is empty</h1>
+        <p><a href={'#'}>Create new entries</a></p>
+      </div>
+    }
     return (
-      <div style={{ position: 'relative' }}>
+      <div style={{ position: 'relative', minHeight: '12rem' }}>
         {modified !== 'none' && <Modal {...{ modified, handleDisplayChange }} />}
-        {value && <ControlList onDragEnd={handleDragEnd}>
+        {!noValue && <ControlList onDragEnd={handleDragEnd}>
           {
             value.map((id, i) => 
               <ControlDraggableItem key={id} identifier={id} index={i}>
@@ -101,7 +114,7 @@ export const createWidget = ({
         
         { /* Renders preview in splitpane via this component... */ }
         <PreviewPortal portalRef={previewRef}>
-          { renderPreview(value.map(identifier => data[identifier])) }
+          {!noValue && renderPreview(value.map(identifier => data[identifier])) }
         </PreviewPortal>
       </div>
     )

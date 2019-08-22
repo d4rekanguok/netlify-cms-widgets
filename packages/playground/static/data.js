@@ -5,11 +5,11 @@ const homeContent = {
     'post-Rarn0HeUo',
     'post-mfYTWoPYN',
   ],
-  featured: [
-    'post-Rarn0HeUo',
-    'post-Rarn0He12',
-    'post-mfYTWoPYN',
-  ]
+  // featured: [
+  //   'post-Rarn0HeUo',
+  //   'post-Rarn0He12',
+  //   'post-mfYTWoPYN',
+  // ]
 }
 
 const catContent = {
