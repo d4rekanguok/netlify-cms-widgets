@@ -42,7 +42,7 @@ export const diff = <T>({
     newItem
   )
   return {
-    modified: false,
+    modified: true,
     newOrder,
   }
 }
@@ -54,3 +54,10 @@ export const reorder = (list, startIndex, endIndex) => {
 
   return result
 }
+
+export const normalize = <T, K extends keyof T>(data: T[], key: K): Record<string, T> => 
+  data.reduce((result, item) => {
+    const id = String(item[key])
+    result[id] = item
+    return result
+  }, ({} as Record<string, T>))

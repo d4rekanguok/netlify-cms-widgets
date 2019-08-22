@@ -1,4 +1,4 @@
-import { removeOutdatedItem, diff, extract } from './utils'
+import { removeOutdatedItem, diff, extract, normalize } from './utils'
 
 describe('removeOutdatedItem', () => {
   it('should remove outdated items', () => {
@@ -66,5 +66,20 @@ describe('extract', () => {
     const result = extract(data, 'a', 'b')
 
     expect(result).toEqual(expected)
+  })
+})
+
+describe('normalize', () => {
+  it('should turn an array of T to an object of a key of T', () => {
+    const data = [ {id: 'a', content: 100}, {id: 'b', content: 200}, {id: 'c', content: 300} ]
+    const expected = {
+      a: data[0],
+      b: data[1],
+      c: data[2],
+    }
+    const result = normalize(data, 'id')
+
+    expect(result).toEqual(expected)
+    expect(result.a).toBe(data[0])
   })
 })
