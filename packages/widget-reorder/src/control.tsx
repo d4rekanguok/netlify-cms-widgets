@@ -66,6 +66,12 @@ export const ControlList = ({ onDragEnd, children }) =>
   </DragDropContext>
 
 
+const StyledHeader = styled.h1`
+  font-size: 1.25rem;
+  line-height: 1.3;
+  margin-bottom: 1rem;
+`
+
 const StyledModal = styled.div`
   position: absolute;
   width: 50%;
@@ -77,12 +83,6 @@ const StyledModal = styled.div`
   background-color: #fff;
   border-radius: 0.25rem;
   box-shadow: 0 6px 12px 0 rgba(0,0,0,0.2);
-
-  h1 {
-    font-size: 1.25rem;
-    line-height: 1.3;
-    margin-bottom: 1rem;
-  }
 
   button {
     border: 1px solid #dfdfe3;
@@ -102,34 +102,52 @@ const StyledOverlay = styled.div`
 
 export type Modified = 'none' | 'unset' | 'modified'
 
-const modalContent: Record<Modified, Record<'title' | 'action', string>> = {
-  none: {
-    title: '',
-    action: '',
-  },
-  unset: {
-    title: 'Order hasn\'t been set yet',
-    action: 'Start Ordering'
-  },
-  modified: {
-    title: 'Source collection has been changed',
-    action: 'Apply changes'
-  }
+interface ModalContentArgs {
+  collection: string;
+  modified: Modified;
 }
 
-interface ModalProps {
-  modified: Modified;
+type ModalContent = Record<'title' | 'action', string>
+
+const getModalContent = ({ modified, collection}: ModalContentArgs): ModalContent => {
+  let title = ''
+  let action = ''
+
+  if (modified === 'unset') {
+    title = `Order for collection '${collection}' hasn\'t been set yet`
+    action = 'Start Ordering'
+  }
+  if (modified === 'modified') {
+    title = `Entries of collection '${collection}' have been changed`
+    action = 'Apply changes'
+  }
+  return { title, action }
+}
+
+interface ModalProps extends ModalContentArgs {
   handleDisplayChange: () => void;
 }
 
-export const Modal: React.FC<ModalProps> = ({ modified, handleDisplayChange }) => {
-  const { title, action } = modalContent[modified]
+export const Modal: React.FC<ModalProps> = ({ collection, modified, handleDisplayChange }) => {
+  const { title, action } = getModalContent({ modified, collection })
   return (
     <StyledOverlay>
       <StyledModal>
-        <h1>{title}</h1>
+        <StyledHeader>{title}</StyledHeader>
         <button onClick={() => handleDisplayChange()}>{action}</button>
       </StyledModal>
     </StyledOverlay>
   )
 }
+
+const StyledEmptyMessage = styled.div`
+  padding: 1rem;
+  text-align: center;
+`
+
+export const EmptyMessage = ({ className, collection }) => (
+  <StyledEmptyMessage className={className}>
+    <StyledHeader>Collection &apos;{collection}&apos; is empty</StyledHeader>
+    <p><a href={`#/collections/${collection}/new`} target="blank">Create new entries</a></p>
+  </StyledEmptyMessage>
+)

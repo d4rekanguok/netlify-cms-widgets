@@ -4,7 +4,14 @@ import { DropResult } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
 import { normalize, diff, reorder } from './utils'
 import { renderDefaultPreview, PreviewPortal, getPreview } from './preview'
-import { ControlList, ControlDraggableItem, renderDefaultControl, Modal, Modified } from './control'
+import { 
+  ControlList, 
+  ControlDraggableItem, 
+  renderDefaultControl, 
+  Modal, 
+  Modified, 
+  EmptyMessage,
+} from './control'
 
 export interface ControlProps extends WidgetProps {
   value: List<string>;
@@ -27,7 +34,7 @@ export const createWidget = ({
 
   const previewRef = React.createRef<HTMLDivElement>()
 
-  const Control: React.FC<ControlProps> = ({ query, forID, value, onChange, field }) => {
+  const Control: React.FC<ControlProps> = ({ classNameWrapper, query, forID, value, onChange, field }) => {
     const [data, setData] = useState<Record<string, unknown>>({})
     const [fetched, setFetched] = useState<boolean>(false)
     const [newOrder, setNewOrder] = useState<string[]>([])
@@ -95,14 +102,13 @@ export const createWidget = ({
 
     if (!fetched) return <div>loading...</div>
     if (fetched && Object.keys(data).length === 0) {
-      return <div>
-        <h1>Collection &apos;{collection}&apos; is empty</h1>
-        <p><a href={'#'}>Create new entries</a></p>
-      </div>
+      return (
+        <EmptyMessage className={classNameWrapper} collection={collection} />
+      )
     }
     return (
       <div style={{ position: 'relative', minHeight: '12rem' }}>
-        {modified !== 'none' && <Modal {...{ modified, handleDisplayChange }} />}
+        {modified !== 'none' && <Modal {...{ collection, modified, handleDisplayChange }} />}
         {!noValue && <ControlList onDragEnd={handleDragEnd}>
           {
             value.map((id, i) => 
