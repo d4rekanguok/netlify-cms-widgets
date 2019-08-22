@@ -1,7 +1,10 @@
 import React from 'react'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 
-export const renderDefaultControl= (item): React.ReactElement => <p>{Object.values(item).join(' ')}</p>
+export const renderDefaultControl = (item): React.ReactElement => {
+  if (typeof item === 'undefined') return <p>Entry removed</p>
+  return <p>{Object.values(item).join(' ')}</p>
+}
 
 export const ControlDraggableItem = ({ identifier, index, children }) =>
   <Draggable

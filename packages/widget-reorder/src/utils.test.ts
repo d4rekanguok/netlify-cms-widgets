@@ -14,9 +14,9 @@ describe('removeOutdatedItem', () => {
 
 describe('diff', () => {
   it('should remove outdated and add new items', () => {
-    const currentOrder = [{ id: 1 }, { id: 2 }, { id: 3 }]
-    const data = [{ id: 2 }, { id: 3 }, { id: 4 }]
-    const expected = [{ id: 2 }, { id: 3 }, { id: 4 }]
+    const currentOrder = [1, 3, 2, 5, 4]
+    const data = [1, 2, 3, 4]
+    const expected = [1, 3, 2, 4]
 
     const result = diff({
       currentOrder,

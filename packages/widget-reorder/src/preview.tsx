@@ -16,7 +16,10 @@ export const DefaultPreview = ({ items }) => (
   <section>
     <hr />
     <p>Default Widget Preview</p>
-    {items.map((item, i) => <p key={i}>{item.title}</p>)}
+    {items.map((item, i) => {
+      if (typeof item === 'undefined') return null
+      return <p key={i}>{item.title}</p>
+    })}
   </section>
 )
 

@@ -1,16 +1,13 @@
-import React, { useEffect } from 'react'
-import { fromJS } from 'immutable'
+import React, { useEffect, useState } from 'react'
+import { fromJS, List } from 'immutable'
 import { DropResult } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
-import { reducer } from './reducer'
-import { queryData, setOrder, handleDragEnd } from './action'
+import { normalize, diff, reorder } from './utils'
 import { renderDefaultPreview, PreviewContainer, getPreview } from './preview'
 import { ControlList, ControlDraggableItem, renderDefaultControl } from './control'
 
-const initialState = { 
-  data: {},
-  order: [],
-  orderModified: false,
+export interface ControlProps extends WidgetProps {
+  value: List<string>;
 }
 
 export interface CreateControlOptions {
@@ -19,7 +16,9 @@ export interface CreateControlOptions {
   name?: string;
 }
 
+// type Modified = 'none' | 'empty' | 'modified'
 type CreateWidget = (options: CreateControlOptions) => React.StatelessComponent<WidgetProps>
+
 
 export const createWidget = ({ 
   renderControl = renderDefaultControl,
@@ -29,41 +28,75 @@ export const createWidget = ({
 
   const previewRef = React.createRef<HTMLDivElement>()
 
-  const Control: React.FC<WidgetProps> = (props) => {
-    const [state, dispatch] = React.useReducer(reducer, initialState)
-    const { order, data, orderModified } = state
-    const { onChange, value } = props
-    
+  const Control: React.FC<ControlProps> = ({ query, forID, value, onChange, field }) => {
+    // const [state, dispatch] = React.useReducer(reducer, initialState)
+    // const { order, data, orderModified } = state
+
+    const [data, setData] = useState<Record<string, unknown>>({})
+    const [fetched, setFetched] = useState<boolean>(false)
+    // const [modified, setModified] = useState<Modified>('none')
+
+    const collection: string = field.get('collection')
+    const fieldId: string = field.get('id_field')
+
     useEffect(() => {
-      // Request data on init
-      queryData(props, dispatch)
+      const fetchData = async () => {
+        const result = await query(forID, collection, [fieldId], '')
+        const sourceData = result.payload.response.hits.map(payload => payload.data)
+        // @ts-ignore
+        const normalizedData = normalize(sourceData, fieldId)
+        setData(normalizedData)
+        setFetched(true)
+
+        const idData: string[] = sourceData.map(item => item[fieldId])
+
+        if (!value || !value.toJS) {
+          onChange(fromJS(idData))
+          return
+        }
+
+        const currentOrder = value.toJS()
+        const { newOrder, modified } = diff({
+          currentOrder,
+          data: idData,
+        })
+        
+        if (modified) {
+          onChange(fromJS(newOrder))
+        }
+      }
+
+      fetchData()
     }, [])
 
-    // When order is modified, call onChange
-    useEffect(() => {
-      if (orderModified) onChange(fromJS(order))
-    }, [order])
+    const handleDragEnd = (result: DropResult) => {
+      if (!result.destination || result.source.index === result.destination.index) return
+      const data = value.toJS()
 
-    // When data changes, set order
-    useEffect(() => {
-      Object.keys(data).length > 0 && setOrder(data, value, dispatch)
-    }, [data])
+      const sortedData = reorder({
+        data,
+        startIndex: result.source.index,
+        endIndex: result.destination.index
+      })
 
-    if (!order || order.length === 0) return <div>loading...</div>
+      onChange(fromJS(sortedData))
+    }
+
+    if (!fetched) return <div>loading...</div>
     return (
       <>
-        <ControlList onDragEnd={((result: DropResult) => handleDragEnd(result, order, dispatch))}>
+        {value && <ControlList onDragEnd={handleDragEnd}>
           {
-            order.map((id, i) => 
+            value.map((id, i) => 
               <ControlDraggableItem key={id} identifier={id} index={i}>
                 {renderControl(data[id])}
               </ControlDraggableItem>)
           }
-        </ControlList>
+        </ControlList>}
         
         { /* Renders preview in splitpane via this component... */ }
         <PreviewContainer myRef={previewRef}>
-          { renderPreview(order.map(identifier => data[identifier])) }
+          { renderPreview(value.map(identifier => data[identifier])) }
         </PreviewContainer>
         </>)
   }

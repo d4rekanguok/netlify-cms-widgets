@@ -50,11 +50,11 @@ title: 안녕 세상
 id: post-Rarn0He12
 ---`
 
-// const post4 =
-//   `---
-// title: Hej världen!
-// id: post-HahELOG49
-// ---`
+const post4 =
+  `---
+title: Hej världen!
+id: post-HahELOG49
+---`
 
 export default {
   '_data': {
@@ -72,11 +72,11 @@ export default {
     'hi.md': {
       'content': post2
     },
-    'ha.md': {
-      'content': post3
-    },
-    // 'hej.md': {
-    //   'content': post4
-    // }
+    // 'ha.md': {
+    //   'content': post3
+    // },
+    'hej.md': {
+      'content': post4
+    }
   }
 }

@@ -47,8 +47,8 @@ export const diff = <T>({
   }
 }
 
-export const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list)
+export const reorder = ({ data, startIndex, endIndex }) => {
+  const result = Array.from(data)
   const [removed] = result.splice(startIndex, 1)
   result.splice(endIndex, 0, removed)
 
