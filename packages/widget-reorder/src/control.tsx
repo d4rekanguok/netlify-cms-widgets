@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 
 export const renderDefaultControl = (item): React.ReactElement => {
-  if (typeof item === 'undefined') return <p>Entry removed</p>
   return <p>{Object.values(item).join(' ')}</p>
 }
 
@@ -118,7 +117,7 @@ const getModalContent = ({ modified, collection}: ModalContentArgs): ModalConten
     action = 'Start Ordering'
   }
   if (modified === 'modified') {
-    title = `Entries of collection '${collection}' have been changed`
+    title = `Collection '${collection}' have been changed`
     action = 'Apply changes'
   }
   return { title, action }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { fromJS, List } from 'immutable'
 import { DropResult } from 'react-beautiful-dnd'
 import { WidgetProps } from '@ncwidgets/common-typings'
-import { normalize, diff, reorder } from './utils'
+import { normalize, diff, reorder, extract } from './utils'
 import { renderDefaultPreview, PreviewPortal, getPreview } from './preview'
 import { 
   ControlList, 
@@ -25,7 +25,6 @@ export interface CreateControlOptions {
 
 type CreateWidget = (options: CreateControlOptions) => React.StatelessComponent<WidgetProps>
 
-
 export const createWidget = ({ 
   renderControl = renderDefaultControl,
   renderPreview = renderDefaultPreview,
@@ -34,7 +33,8 @@ export const createWidget = ({
 
   const previewRef = React.createRef<HTMLDivElement>()
 
-  const Control: React.FC<ControlProps> = ({ classNameWrapper, query, forID, value, onChange, field }) => {
+  const Control: React.FC<ControlProps> = (props) => {
+    const { classNameWrapper, query, forID, value, onChange, field } = props
     const [data, setData] = useState<Record<string, unknown>>({})
     const [fetched, setFetched] = useState<boolean>(false)
     const [newOrder, setNewOrder] = useState<string[]>([])
@@ -42,6 +42,7 @@ export const createWidget = ({
 
     const collection: string = field.get('collection')
     const fieldId: string = field.get('id_field')
+    const displayFields: List<string> = field.get('display_fields')
 
     // no value or empty value, assuming value is always a List<string>
     const noValue = (typeof value === 'undefined' || value.size === 0) 
@@ -111,10 +112,17 @@ export const createWidget = ({
         {modified !== 'none' && <Modal {...{ collection, modified, handleDisplayChange }} />}
         {!noValue && <ControlList onDragEnd={handleDragEnd}>
           {
-            value.map((id, i) => 
-              <ControlDraggableItem key={id} identifier={id} index={i}>
-                {renderControl(data[id])}
-              </ControlDraggableItem>)
+            value.map((id, i) => {
+              const item = data[id]
+              const displayData = (typeof item === 'undefined')
+                ? { error: 'Entry does not exist' }
+                // @ts-ignore
+                : extract(data[id], ...displayFields)
+              return (
+                <ControlDraggableItem key={id} identifier={id} index={i}>
+                  {renderControl(displayData)}
+                </ControlDraggableItem>)
+            })
           }
         </ControlList>}
         

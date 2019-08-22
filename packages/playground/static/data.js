@@ -5,11 +5,11 @@ const homeContent = {
     'post-Rarn0HeUo',
     'post-mfYTWoPYN',
   ],
-  // featured: [
-  //   'post-Rarn0HeUo',
-  //   'post-Rarn0He12',
-  //   'post-mfYTWoPYN',
-  // ]
+  featured: [
+    'post-Rarn0HeUo',
+    'post-Rarn0He12',
+    'post-mfYTWoPYN',
+  ]
 }
 
 const catContent = {
@@ -66,17 +66,17 @@ export default {
     }
   },
   '_posts': {
-    // 'hello.md': {
-    //   'content': post1
-    // },
-    // 'hi.md': {
-    //   'content': post2
-    // },
+    'hello.md': {
+      'content': post1
+    },
+    'hi.md': {
+      'content': post2
+    },
     // 'ha.md': {
     //   'content': post3
     // },
-    // 'hej.md': {
-    //   'content': post4
-    // }
+    'hej.md': {
+      'content': post4
+    }
   }
 }
