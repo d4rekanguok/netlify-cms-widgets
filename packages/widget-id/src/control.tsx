@@ -1,6 +1,6 @@
-import * as React from "react"
-import shortid from "shortid"
-import { WidgetProps } from "@ncwidgets/common-typings"
+import * as React from 'react'
+import shortid from 'shortid'
+import { WidgetProps } from '@ncwidgets/common-typings'
 
 export class Control extends React.Component<WidgetProps> {
   constructor(props: WidgetProps) {
@@ -13,11 +13,11 @@ export class Control extends React.Component<WidgetProps> {
 
   generateId() {
     const { field, onChange } = this.props
-    const usePrefix = field.get("prefix")
-    const useTimestamp = field.get("timestamp")
+    const usePrefix = field.get('prefix')
+    const useTimestamp = field.get('timestamp')
 
-    const prefix = usePrefix ? usePrefix + "-" : ""
-    const timestamp = useTimestamp ? Date.now() + "-" : ""
+    const prefix = usePrefix ? usePrefix + '-' : ''
+    const timestamp = useTimestamp ? Date.now() + '-' : ''
 
     const id = prefix + timestamp + shortid()
 
@@ -36,16 +36,16 @@ export class Control extends React.Component<WidgetProps> {
       classNameWrapper,
       setActiveStyle,
       setInactiveStyle,
-      value
+      value,
     } = this.props
     return (
       <input
-        type="text"
+        type='text'
         className={classNameWrapper}
         style={{
-          color: "#cdcdcd"
+          color: '#cdcdcd',
         }}
-        value={value || ""}
+        value={value || ''}
         id={forID}
         onFocus={setActiveStyle}
         onBlur={setInactiveStyle}
