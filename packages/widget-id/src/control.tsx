@@ -3,15 +3,16 @@ import shortid from 'shortid'
 import { WidgetProps } from '@ncwidgets/common-typings'
 
 export class Control extends React.Component<WidgetProps> {
-  public componentDidMount() {
-    const {
-      value,
-      field,
-      onChange,
-    } = this.props
-    
-    if (value) return
-  
+  constructor(props: WidgetProps) {
+    super(props)
+
+    if (props.value) return
+
+    this.generateId()
+  }
+
+  generateId() {
+    const { field, onChange } = this.props
     const usePrefix = field.get('prefix')
     const useTimestamp = field.get('timestamp')
 
@@ -19,7 +20,14 @@ export class Control extends React.Component<WidgetProps> {
     const timestamp = useTimestamp ? Date.now() + '-' : ''
 
     const id = prefix + timestamp + shortid()
+
     onChange(id)
+  }
+
+  componentDidUpdate() {
+    if (this.props.value) return
+
+    this.generateId()
   }
 
   public render() {
@@ -32,7 +40,7 @@ export class Control extends React.Component<WidgetProps> {
     } = this.props
     return (
       <input
-        type="text"
+        type='text'
         className={classNameWrapper}
         style={{
           color: '#cdcdcd',
