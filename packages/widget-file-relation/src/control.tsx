@@ -16,21 +16,37 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
   }
 
   public async componentDidMount() {
+    // @ts-ignore
     const { loadEntry, field } = this.props
     
+    const collection = field.get('collection')
+    const file = field.get('file')
+  
+    await loadEntry(collection, file)
+  }
+
+  public componentDidUpdate() {
+    // @ts-ignore
+    const { field, entities } = this.props
+
     const collection = field.get('collection')
     const file = field.get('file')
     const fieldName = field.get('target_field')
     const fieldId = field.get('id_field')
     const fieldDisplay: string = field.get('display_fields') || fieldId
-  
-    const results = await loadEntry(collection, file)
-    const data = results.payload.entry.data[fieldName]
-    const options = data.map(option => ({
-      value: option[fieldId],
-      label: option[fieldDisplay],
-    }))
-    this.setState({ options })
+
+    if (this.state.options.length === 0) {
+      const entity = entities.get(`${collection}.${file}`)
+      if (entity) {
+        const data = entity.get('data').get(fieldName)
+        console.log({ })
+        const options = data.map(option => ({
+          value: option.get(fieldId),
+          label: option.get(fieldDisplay),
+        }))
+        this.setState({ options })
+      }
+    }
   }
 
   public changeHandle = selected => {

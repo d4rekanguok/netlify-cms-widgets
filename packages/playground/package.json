@@ -7,13 +7,15 @@
     "@ncwidgets/file-relation": "^0.5.0",
     "@ncwidgets/id": "^0.5.1",
     "@ncwidgets/reorder": "^0.5.0",
-    "netlify-cms-app": "^2.9.6",
+    "netlify-cms-app": "file:.yalc/netlify-cms-app",
+    "netlify-cms-core": "file:.yalc/netlify-cms-core",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --config ./webpack.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -22,5 +24,8 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6"
-  }
+  },
+  "browserslist": [
+    "last 1 version"
+  ]
 }
