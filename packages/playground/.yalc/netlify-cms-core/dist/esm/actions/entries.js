@@ -31,6 +31,7 @@ exports.createDraftDuplicateFromEntry = createDraftDuplicateFromEntry;
 exports.retrieveLocalBackup = retrieveLocalBackup;
 exports.deleteLocalBackup = deleteLocalBackup;
 exports.loadEntry = loadEntry;
+exports.tryLoadEntry = tryLoadEntry;
 exports.loadEntries = loadEntries;
 exports.traverseCollectionCursor = traverseCollectionCursor;
 exports.createEmptyDraft = createEmptyDraft;
@@ -432,20 +433,15 @@ function deleteLocalBackup(collection, slug) {
  */
 
 
-function loadEntry(collection, slug, createDraft = true) {
+function loadEntry(collection, slug) {
   return async (dispatch, getState) => {
-    const state = getState();
-    const backend = (0, _backend.currentBackend)(state.config);
     await (0, _mediaLibrary.waitForMediaLibraryToLoad)(dispatch, getState());
     dispatch(entryLoading(collection, slug));
 
     try {
-      const loadedEntry = await backend.getEntry(getState(), collection, slug);
+      const loadedEntry = await tryLoadEntry(getState(), collection, slug);
       dispatch(entryLoaded(collection, loadedEntry));
-
-      if (createDraft) {
-        dispatch(createDraftFromEntry(loadedEntry));
-      }
+      dispatch(createDraftFromEntry(loadedEntry));
     } catch (error) {
       console.error(error);
       dispatch(notifSend({
@@ -459,6 +455,12 @@ function loadEntry(collection, slug, createDraft = true) {
       dispatch(entryLoadError(error, collection, slug));
     }
   };
+}
+
+async function tryLoadEntry(state, collection, slug) {
+  const backend = (0, _backend.currentBackend)(state.config);
+  const loadedEntry = await backend.getEntry(state, collection, slug);
+  return loadedEntry;
 }
 
 const appendActions = (0, _immutable.fromJS)({

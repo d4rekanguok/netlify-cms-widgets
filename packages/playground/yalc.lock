@@ -2,12 +2,12 @@
   "version": "v1",
   "packages": {
     "netlify-cms-app": {
-      "signature": "2840b3b99f7b9b2f24ff967c2418889f",
+      "signature": "75a6b285951048bfcb910d8d7f4ba25f",
       "file": true,
       "replaced": "^2.9.6"
     },
     "netlify-cms-core": {
-      "signature": "9a8c663ef582ebe51fc1e38c962b47ef",
+      "signature": "5fec621f3738b9d450c1a51e54161181",
       "file": true
     }
   }
