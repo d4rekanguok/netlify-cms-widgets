@@ -25,7 +25,7 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
     const fieldDisplay: string = field.get('display_fields') || fieldId
   
     const results = await loadEntry(collection, file)
-    const data = results.payload.entry.data[fieldName]
+    const data = results.data[fieldName]
     const options = data.map(option => ({
       value: option[fieldId],
       label: option[fieldDisplay],

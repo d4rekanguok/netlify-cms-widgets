@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "packages": {
+    "netlify-cms-app": {
+      "signature": "75a6b285951048bfcb910d8d7f4ba25f",
+      "file": true,
+      "replaced": "^2.9.6"
+    },
+    "netlify-cms-core": {
+      "signature": "5fec621f3738b9d450c1a51e54161181",
+      "file": true
+    }
+  }
+}
