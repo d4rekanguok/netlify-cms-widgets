@@ -7,8 +7,7 @@
     "@ncwidgets/file-relation": "^0.5.0",
     "@ncwidgets/id": "^0.5.1",
     "@ncwidgets/reorder": "^0.5.0",
-    "netlify-cms-app": "file:.yalc/netlify-cms-app",
-    "netlify-cms-core": "file:.yalc/netlify-cms-core",
+    "netlify-cms-app": "^2.11.32",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },

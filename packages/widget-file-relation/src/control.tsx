@@ -16,7 +16,6 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
   }
 
   public async componentDidMount() {
-    // @ts-ignore
     const { loadEntry, field } = this.props
     
     const collection = field.get('collection')
@@ -26,7 +25,6 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
     const fieldDisplay: string = field.get('display_fields') || fieldId
   
     const results = await loadEntry(collection, file)
-    // results.payload.entry.data[fieldName]
     const data = results.data[fieldName]
     const options = data.map(option => ({
       value: option[fieldId],

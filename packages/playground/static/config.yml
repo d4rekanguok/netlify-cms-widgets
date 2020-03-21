@@ -24,7 +24,7 @@ collections:
       - label: Categories
         name: cats
         widget: ncw-file-relation
-        collection: hahahah
+        collection: setting
         file: cats
         target_field: cats
         id_field: id
