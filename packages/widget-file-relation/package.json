@@ -1,6 +1,6 @@
 {
   "name": "@ncwidgets/file-relation",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "description": "Netlify custom widget file relation",
   "main": "./dist/index.js",
   "keywords": [],
@@ -8,9 +8,9 @@
   "license": "MIT",
   "repository": "https://github.com/d4rekanguok/netlify-cms-widgets",
   "peerDependencies": {
+    "netlify-cms-app": "^2.11.32",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "netlify-cms-app": "^2.11.32"
+    "react-dom": "^16.8.6"
   },
   "dependencies": {
     "immutable": "^4.0.0-rc.12",
