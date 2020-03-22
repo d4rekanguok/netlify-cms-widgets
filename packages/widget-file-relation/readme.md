@@ -53,25 +53,27 @@ collections:
       - label: Categories
         name: cats
 
-        # default widget name
+        # Default widget name
         widget: ncw-file-relation
 
-        # collection name
+        # Collection name
         collection: setting
 
-        # the name of the file in that collection
+        # The name of the file in that collection
         file: categories
 
-        # the field that is a list
+        # The field that is a list
         target_field: categories
 
-        # the field that will be used to store data
+        # The field that will be used to store data
+        # Only applicable to list with multi fields
         id_field: id
 
-        # the field that will be used to show as options
+        # The field that will be used to show as options
+        # Only applicable to list with multi fields
         display_fields: name
 
-        # allow multiple selection
+        # Allow multiple selection
         multiple: true 
 ```
 
