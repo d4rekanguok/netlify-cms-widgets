@@ -1,11 +1,13 @@
 import * as React from 'react'
+import { Map } from 'immutable'
 
 export const Preview = ({ value }) => {
-  const display = value 
-    ? value.map(item => 
-      (typeof item === 'string') 
-        ? item 
-        : item.get('label')).join(', ') 
-    : ''
+  if (typeof value === 'undefined') return null
+
+  const display = value
+    .map(v => (Map.isMap(v)) ? v.get('label') : v)
+    .filter(v => v)
+    .join(', ')
+
   return <p>{display}</p>
 }

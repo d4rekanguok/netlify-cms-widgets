@@ -9,7 +9,7 @@ module.exports = {
   entry: path.join(__dirname, 'index.js'),
   output: {
     path: distDir,
-    filename: 'bundle.js',
+    filename: 'bundle-[hash].js',
   },
   devtool: 'eval',
   module: {
