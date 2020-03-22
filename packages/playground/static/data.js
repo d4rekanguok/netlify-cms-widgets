@@ -13,6 +13,7 @@ const homeContent = {
 }
 
 const catContent = {
+  coffee: ['americano', 'capuchino', 'espresso'],
   cats: [
     {
       name: 'Cat',

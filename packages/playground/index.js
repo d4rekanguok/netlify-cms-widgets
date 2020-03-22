@@ -2,8 +2,10 @@ import React, { useEffect } from 'react'
 import { render } from 'react-dom'
 import cms from 'netlify-cms-app'
 import { Widget as IdWidget } from '@ncwidgets/id'
-import { Widget as ReorderWidget, createWidget } from '@ncwidgets/reorder'
+import { Widget as ReorderWidget } from '@ncwidgets/reorder'
 import { Widget as FileRelationWidget } from '@ncwidgets/file-relation'
+
+import { customReorderWidget } from './custom-order-components'
 import repoData from './static/data'
 
 const createRoot = () => {
@@ -12,37 +14,18 @@ const createRoot = () => {
   return $root
 }
 
-const ListComponent = ({ item }) => (
-  <>
-    <strong>{item.title}</strong>
-    <p style={{ margin: 0, color: '#798291', fontSize: '0.8rem' }}>{item.id}</p>
-  </>
-)
-
-const CustomReorderPreview = ({ items }) => (
-  <section>
-    <hr />
-    <p>Custom Widget Preview</p>
-    {items.map((item, i) => <p key={i}>{item.title}</p>)}
-  </section>
-)
-
-const customReorderWidget = createWidget({
-  renderControl: ({ value }) => <ListComponent item={value} />,
-  renderPreview: ({ value }) => <CustomReorderPreview items={value}/>,
-})
-
 const CMS = () => {
   useEffect(() => {
     window.repoFiles = repoData
 
     cms.registerWidget(IdWidget)
     cms.registerWidget(ReorderWidget)
+    cms.registerWidget(FileRelationWidget)
+    
     cms.registerWidget({
       name: 'custom-reorder',
       ...customReorderWidget,
     })
-    cms.registerWidget(FileRelationWidget)
     cms.registerPreviewStyle('./preview.css')
     cms.init()
   }, [])

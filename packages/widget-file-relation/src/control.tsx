@@ -26,10 +26,19 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
   
     const results = await loadEntry(collection, file)
     const data = results.data[fieldName]
-    const options = data.map(option => ({
-      value: option[fieldId],
-      label: option[fieldDisplay],
-    }))
+
+    const options = data.map(option => {
+      let value: string, label: string
+
+      if (typeof option === 'string') {
+        value = label = option
+      } else {
+        value = option[fieldId]
+        label = option[fieldDisplay]
+      }
+
+      return { value, label }
+    })
     this.setState({ options })
   }
 

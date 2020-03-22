@@ -21,6 +21,15 @@ collections:
         timestamp: true
         hint: This widget generate an unique read-only id
 
+      - label: Coffee
+        name: coffee
+        widget: ncw-file-relation
+        collection: setting
+        file: cats
+        target_field: coffee
+        multiple: true
+        hint: This widget retrives options from a simple list in a file collection
+
       - label: Categories
         name: cats
         widget: ncw-file-relation
@@ -30,6 +39,7 @@ collections:
         id_field: id
         display_fields: name
         multiple: true
+        hint: This widget retrives options from a object list in a file collection
 
   - label: Pages
     name: pages
@@ -67,6 +77,12 @@ collections:
         name: cats
         file: _data/_cats.json
         fields:
+          - label: Coffee
+            name: coffee
+            widget: list
+            allow_add: true
+            hint: Use comma to separate between name
+
           - label: Categories
             name: cats
             widget: list
