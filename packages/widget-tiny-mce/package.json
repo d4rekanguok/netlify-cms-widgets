@@ -1,0 +1,24 @@
+{
+  "name": "@ncwidgets/tiny-mce",
+  "version": "0.6.0",
+  "description": "Netlify custom editor widget with TinyMCE",
+  "main": "./index.js",
+  "keywords": [],
+  "author": "Derek Nguyen <derek@penandpillow.com>",
+  "license": "MIT",
+  "repository": "https://github.com/d4rekanguok/netlify-cms-widgets",
+  "dependencies": {
+    "@tinymce/tinymce-react": "^3.5.0",
+    "immutable": "^4.0.0-rc.12"
+  },
+  "peerDependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.23"
+  }
+}

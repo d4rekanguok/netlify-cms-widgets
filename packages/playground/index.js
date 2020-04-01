@@ -4,6 +4,7 @@ import cms from 'netlify-cms-app'
 import { Widget as IdWidget } from '@ncwidgets/id'
 import { Widget as ReorderWidget } from '@ncwidgets/reorder'
 import { Widget as FileRelationWidget } from '@ncwidgets/file-relation'
+import { Widget as TinyMCEWidget } from '@ncwidgets/tiny-mce'
 
 import { customReorderWidget } from './custom-order-components'
 import repoData from './static/data'
@@ -21,6 +22,7 @@ const CMS = () => {
     cms.registerWidget(IdWidget)
     cms.registerWidget(ReorderWidget)
     cms.registerWidget(FileRelationWidget)
+    cms.registerWidget(TinyMCEWidget)
     
     cms.registerWidget({
       name: 'custom-reorder',

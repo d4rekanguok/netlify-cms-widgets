@@ -7,6 +7,7 @@
     "@ncwidgets/file-relation": "^0.6.1",
     "@ncwidgets/id": "^0.6.0",
     "@ncwidgets/reorder": "^0.6.0",
+    "@ncwidgets/tiny-mce": "^0.6.0",
     "netlify-cms-app": "^2.11.32",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
@@ -22,7 +23,8 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
-    "babel-loader": "^8.0.6"
+    "babel-loader": "^8.0.6",
+    "@babel/plugin-proposal-class-properties": "^7.8.3"
   },
   "browserslist": [
     "last 1 version"
