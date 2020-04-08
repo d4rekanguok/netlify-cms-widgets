@@ -41,6 +41,13 @@ collections:
         multiple: true
         hint: This widget retrives options from a object list in a file collection
 
+      - label: Content
+        name: content
+        widget: ncw-tiny-mce
+        tiny_config:
+          apiKey: 2mop17cb19lb2zpat4q08uodq6evr03lp1gog81fqj4mo7t3
+
+
   - label: Pages
     name: pages
     files:
