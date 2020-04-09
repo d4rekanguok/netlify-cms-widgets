@@ -1,6 +1,6 @@
 {
   "name": "@ncwidgets/netlify-cms",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Custom build for NetlifyCMS that includes all of @ncwidgets custom widgets",
   "main": "./index.js",
   "keywords": [],
@@ -12,8 +12,8 @@
   },
   "dependencies": {
     "@emotion/styled-base": "^10.0.31",
-    "@ncwidgets/file-relation": "^0.6.1",
-    "@ncwidgets/id": "^0.6.0",
+    "@ncwidgets/file-relation": "^0.7.0",
+    "@ncwidgets/id": "^0.7.0",
     "codemirror": "^5.52.2",
     "create-react-class": "^15.6.3",
     "netlify-cms-app": "^2.12.6",
