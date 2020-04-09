@@ -53,5 +53,8 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "@emotion/styled-base": "^10.0.31"
+  }
 }
