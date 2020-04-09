@@ -2,7 +2,7 @@
   "name": "@ncwidgets/netlify-cms",
   "version": "0.7.0",
   "description": "Custom build for NetlifyCMS that includes all of @ncwidgets custom widgets",
-  "main": "./index.js",
+  "main": "dist/netlify-cms.js",
   "keywords": [],
   "author": "Derek Nguyen <derek@penandpillow.com>",
   "license": "MIT",
