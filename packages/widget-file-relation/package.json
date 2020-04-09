@@ -26,6 +26,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "@types/react": "^16.8.23"
+    "typescript": "^3.8.3"
   }
 }
