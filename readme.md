@@ -12,7 +12,7 @@
 
 npm package | description | docs
 ---|---|---
-@ncwidgets/id | Generate an unique ID for new entries in a folder collection | 
+@ncwidgets/id | Generate a unique ID for new entries in a folder collection | 
 @ncwidgets/file-relation | Dropdown select widget for a field inside a file collection (the default relation widget only works for folder collections) | [docs](packages/widget-file-relation/readme.md)
 @ncwidgets/reorder | Drag & drop to order entries in a folder collection | [docs](packages/widget-reorder/readme.md)
 @ncwidgets/netlify-cms | Custom netlify-cms build with file-relation & id built in | see [here](#drop-in)
@@ -45,10 +45,50 @@ cms.init()
 \*Note that `@ncwidgets/netlify-cms` is **not a fork**. Since we only register additional custom widgets, it's very easy to keep the build up-to-date. It's also currently not a complete drop-in replacement — deprecated `dist/cms.js` and `cms.css` are not included.
 
 ### With Gatsby
-[TBH]
+Easiest way is to use the official netlify cms plugin. Please follow the instruction [here](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-netlify-cms).
+
+```sh
+npm i gatsby-plugin-netlify-cms netlify-cms-app
+```
+
+Configure `gatsby-plugin-netlify-cms`:
+
+```js
+// gatsby-config.js
+
+module.exports = {
+  plugins: [
+    {
+      resolve: `gatsby-plugin-netlify-cms`,
+      options: {
+        manualInit: true,
+        modulePath: `${__dirname}/src/cms/cms.js`,
+      },
+    },
+  ]
+}
+
+```
+
+Then, install the widgets you need
+```sh
+npm i @ncwidgets/id
+```
+
+And register them
+
+```js
+// src/cms/cms.js
+
+import cms from 'netlify-cms-app'
+import { Widget as IdWidget } from '@ncwidgets/id'
+
+cms.registerWidget(IdWidget)
+cms.init()
+```
 
 ### With Hugo
-[TBH]
+Please see this example demo: https://github.com/d4rekanguok/ncwidgets-hugo-example
 
 ## Contribute
 
