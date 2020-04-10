@@ -35,12 +35,14 @@ cms.init()
 
 ### Drop-in
 
-`@ncwidgets/netlify-cms` is a drop-in replacement for `netlify-cms`, but includes file-relation & id widget.
+`@ncwidgets/netlify-cms` is a drop-in replacement* for `netlify-cms`, but includes file-relation & id widget.
 
 ```diff
 - <script src="https://unpkg.com/netlify-cms@^2.0.0/dist/netlify-cms.js"></script>
 + <script src="https://unpkg.com/@ncwidgets/netlify-cms@^0.7.0/dist/netlify-cms.js"></script>
 ```
+
+\*Note that `@ncwidgets/netlify-cms` is **not a fork**. Since we only register additional custom widgets, it's very easy to keep the build up-to-date. It's also currently not a complete drop-in replacement — deprecated `dist/cms.js` and `cms.css` are not included.
 
 ### With Gatsby
 [TBH]
