@@ -1,0 +1,7 @@
+version: 1
+update_configs:
+  - package_manager: "javascript"
+    directory: "/packages/netlify-cms"
+    update_schedule: "weekly"
+    default_assignees:
+      - "d4rekanguok"
