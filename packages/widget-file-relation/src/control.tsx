@@ -25,7 +25,11 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
     const fieldDisplay: string = field.get('display_fields') || fieldId
   
     const results = await loadEntry(collection, file)
-    const data = results.data[fieldName]
+    var parts = fieldName.split('.')
+    let data = results.data
+    parts.forEach((part) => {
+      data = data[part]
+    })
 
     const options = data.map(option => {
       let value: string, label: string
