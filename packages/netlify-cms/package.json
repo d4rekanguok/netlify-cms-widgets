@@ -1,6 +1,6 @@
 {
   "name": "@ncwidgets/netlify-cms",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Custom build for NetlifyCMS that includes all of @ncwidgets custom widgets",
   "main": "dist/netlify-cms.js",
   "keywords": [],
