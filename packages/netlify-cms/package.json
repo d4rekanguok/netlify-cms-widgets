@@ -9,6 +9,7 @@
   "repository": "https://github.com/d4rekanguok/netlify-cms-widgets",
   "scripts": {
     "prepublishOnly": "webpack",
+    "build:test": "ANALYZE=true webpack",
     "build": "webpack"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "create-react-class": "^15.6.3",
     "netlify-cms-app": "^2.12.12",
     "netlify-cms-backend-proxy": "^1.0.6",
+    "netlify-cms-lib-widgets": "^1.3.0",
     "netlify-cms-media-library-cloudinary": "^1.3.4",
     "netlify-cms-media-library-uploadcare": "^0.5.5",
     "react": "^16.13.1",
@@ -32,5 +34,6 @@
   },
   "publishConfig": {
     "access": "public"
-  }
+  },
+  "gitHead": "0494af99c932b491b2b4210e47bd73a7a09edcac"
 }
