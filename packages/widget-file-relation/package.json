@@ -1,6 +1,6 @@
 {
   "name": "@ncwidgets/file-relation",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "Netlify custom widget file relation",
   "main": "./dist/index.js",
   "keywords": [],
