@@ -91,7 +91,7 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
           onBlur={setInactiveStyle}
           styles={reactSelectStyles}
           name="categories"
-          isClearable={false}
+          isClearable={true}
           value={selected}
           options={options}
           placeholder={placeholder}
