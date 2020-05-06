@@ -37,7 +37,7 @@ collections:
         file: cats
         target_field: cats
         id_field: id
-        display_fields: name
+        display_summary: "{{name}} | {{id}}"
         multiple: true
         hint: This widget retrives options from a object list in a file collection
 
@@ -48,7 +48,7 @@ collections:
         file: cats
         target_field: cats
         id_field: id
-        display_fields: name
+        display_fields: ['name', 'desc']
         hint: Same as above, but only with single choice
 
       - label: Content

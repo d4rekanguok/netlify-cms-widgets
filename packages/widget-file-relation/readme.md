@@ -69,11 +69,16 @@ collections:
         # Only applicable to list with multi fields
         id_field: id
 
-        # The field that will be used to show as options
-        # Only applicable to list with multi fields
-        display_fields: name
+        # <Optional> The field that will be used to show as options
+        # - Only applicable to list with multi fields
+        # - If not specified, id_field will be used as label
+        display_fields: name # or an array of fields: ["name", "desc"]
 
-        # Allow multiple selection
+        # <Optional> Compose a label from a string template
+        # - If specified, will disable display_fields
+        display_summary: "{{name}} | {{desc}}"
+
+        # <Optional> Allow multiple selection
         multiple: true 
 ```
 

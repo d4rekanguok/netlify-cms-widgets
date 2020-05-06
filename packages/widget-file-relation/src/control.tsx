@@ -1,8 +1,13 @@
 import * as React from 'react'
 import Select from 'react-select'
-import { fromJS, Set } from 'immutable'
+import { fromJS, Set, List } from 'immutable'
 import { reactSelectStyles } from 'netlify-cms-ui-default/dist/esm/styles'
 import { WidgetProps } from '@ncwidgets/common-typings'
+import { stringTemplate } from 'netlify-cms-lib-widgets'
+
+const createLabel = ({ fieldDisplay, item }: { fieldDisplay: List<string>; item: Record<string, any> }): string => {
+  return fieldDisplay.map(field => item[field]).filter(v => v).join(' ')
+}
 
 type Option = Record<'label' | 'value', string>
 
@@ -18,12 +23,22 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
   public async componentDidMount() {
     const { loadEntry, field } = this.props
     
-    const collection = field.get('collection')
-    const file = field.get('file')
-    const fieldName = field.get('target_field')
-    const fieldId = field.get('id_field')
-    const fieldDisplay: string = field.get('display_fields') || fieldId
-  
+    const collection: string = field.get('collection')
+    const file: string = field.get('file')
+    const fieldName: string = field.get('target_field')
+    const fieldId: string = field.get('id_field')
+    const labelTemplate: string | undefined = field.get('display_summary')
+    
+    let fieldDisplay: List<string> = List([fieldId])
+    if (!labelTemplate) {
+      const rawFieldDisplay: string | string[] = field.get('display_fields')
+      if (typeof rawFieldDisplay === 'string') {
+        fieldDisplay = List([rawFieldDisplay])
+      } else if (List.isList(rawFieldDisplay)) {
+        fieldDisplay = rawFieldDisplay
+      }
+    }
+        
     const results = await loadEntry(collection, file)
     const data = results.data[fieldName]
 
@@ -34,7 +49,9 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
         value = label = option
       } else {
         value = option[fieldId]
-        label = option[fieldDisplay]
+        label = labelTemplate
+          ? stringTemplate.compileStringTemplate(labelTemplate, null, null, fromJS(option))
+          : createLabel({ item: option, fieldDisplay })
       }
 
       return { value, label }
