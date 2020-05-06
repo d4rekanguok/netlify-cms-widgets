@@ -1,10 +1,10 @@
 {
   "name": "@ncwidgets/playground",
-  "version": "0.7.0",
+  "version": "0.7.4",
   "description": "Playground",
   "main": "index.js",
   "dependencies": {
-    "@ncwidgets/file-relation": "^0.7.0",
+    "@ncwidgets/file-relation": "^0.7.4",
     "@ncwidgets/id": "^0.7.0",
     "@ncwidgets/reorder": "^0.7.0",
     "@ncwidgets/tiny-mce": "^0.7.0",
