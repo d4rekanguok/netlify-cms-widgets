@@ -19,7 +19,7 @@ collections:
         widget: ncw-id
         prefix: post
         timestamp: true
-        hint: This widget generate an unique read-only id
+        hint: This widget generate a unique read-only id
 
       - label: Coffee
         name: coffee
@@ -41,12 +41,21 @@ collections:
         multiple: true
         hint: This widget retrives options from a object list in a file collection
 
+      - label: Category (Single)
+        name: single
+        widget: ncw-file-relation
+        collection: setting
+        file: cats
+        target_field: cats
+        id_field: id
+        display_fields: name
+        hint: Same as above, but only with single choice
+
       - label: Content
         name: content
         widget: ncw-tiny-mce
         tiny_config:
           apiKey: 2mop17cb19lb2zpat4q08uodq6evr03lp1gog81fqj4mo7t3
-
 
   - label: Pages
     name: pages
