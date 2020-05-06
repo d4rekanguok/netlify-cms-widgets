@@ -3,6 +3,7 @@ import Select from 'react-select'
 import { fromJS, Set } from 'immutable'
 import { reactSelectStyles } from 'netlify-cms-ui-default/dist/esm/styles'
 import { WidgetProps } from '@ncwidgets/common-typings'
+import { stringTemplate } from 'netlify-cms-lib-widgets'
 
 type Option = Record<'label' | 'value', string>
 
@@ -23,7 +24,8 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
     const fieldName = field.get('target_field')
     const fieldId = field.get('id_field')
     const fieldDisplay: string = field.get('display_fields') || fieldId
-  
+    const labelTemplate: string | undefined = field.get('summary')
+    
     const results = await loadEntry(collection, file)
     const data = results.data[fieldName]
 
@@ -34,7 +36,9 @@ export class Control extends React.Component<WidgetProps, WidgetState> {
         value = label = option
       } else {
         value = option[fieldId]
-        label = option[fieldDisplay]
+        label = labelTemplate
+          ? stringTemplate.compileStringTemplate(labelTemplate, null, null, fromJS(option))
+          : option[fieldDisplay]
       }
 
       return { value, label }

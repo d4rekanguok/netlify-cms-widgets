@@ -38,6 +38,7 @@ collections:
         target_field: cats
         id_field: id
         display_fields: name
+        summary: "{{name}} | {{id}}"
         multiple: true
         hint: This widget retrives options from a object list in a file collection
 
