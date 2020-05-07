@@ -1,11 +1,11 @@
 {
   "name": "@ncwidgets/playground",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Playground",
   "main": "index.js",
   "dependencies": {
     "@ncwidgets/file-relation": "^0.8.0",
-    "@ncwidgets/id": "^0.8.0",
+    "@ncwidgets/id": "^0.8.1",
     "@ncwidgets/reorder": "^0.8.0",
     "@ncwidgets/tiny-mce": "^0.8.0",
     "netlify-cms-app": "^2.11.32",
