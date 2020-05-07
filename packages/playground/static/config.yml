@@ -19,7 +19,7 @@ collections:
         widget: ncw-id
         prefix: post
         timestamp: true
-        hint: This widget generate a unique read-only id
+        hint: This widget generates a unique read-only id
 
       - label: Coffee
         name: coffee

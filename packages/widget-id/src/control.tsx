@@ -3,12 +3,24 @@ import shortid from 'shortid'
 import { WidgetProps } from '@ncwidgets/common-typings'
 
 export class Control extends React.Component<WidgetProps> {
+  public inputRef: React.RefObject<HTMLInputElement>
   public constructor(props: WidgetProps) {
     super(props)
+    this.inputRef = React.createRef()
 
     if (props.value) return
 
     this.generateId()
+  }
+
+  public componentDidMount() {
+    const { field } = this.props
+    if (!field.get('hidden')) return
+    const $input = this.inputRef.current
+    if (!$input) return
+    const $container = $input.parentElement
+    if (!$container) return
+    $container.style.display = 'none'
   }
 
   public generateId() {
