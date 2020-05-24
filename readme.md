@@ -1,3 +1,6 @@
+> Hi! If you are here for the file relation widget, NetlifyCMS now supported [this feature out of the box](https://www.netlifycms.org/docs/widgets/#relation). Docs is a bit spare, feel free to open an issue if you get stuck (a) using this new feature or (b) migrating away from `ncw-file-relation`. 
+
+
 <h1 align="center">NetlifyCMS Custom Widgets</h1>
 
 <p align="center">A collection of custom widgets for <a href="https://www.netlifycms.org/">netlify-cms</a></p>
