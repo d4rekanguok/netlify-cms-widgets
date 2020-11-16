@@ -13,7 +13,7 @@
     "build": "webpack"
   },
   "dependencies": {
-    "@emotion/styled-base": "^10.0.31",
+    "@emotion/styled-base": "^11.0.0",
     "@ncwidgets/file-relation": "^0.8.0",
     "@ncwidgets/id": "^0.8.1",
     "codemirror": "^5.52.2",
