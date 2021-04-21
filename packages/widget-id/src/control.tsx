@@ -26,12 +26,14 @@ export class Control extends React.Component<WidgetProps> {
   public generateId() {
     const { field, onChange } = this.props
     const usePrefix = field.get('prefix')
+    const usePostfix = field.get('postfix')
     const useTimestamp = field.get('timestamp')
 
     const prefix = usePrefix ? usePrefix + '-' : ''
     const timestamp = useTimestamp ? Date.now() + '-' : ''
-
-    const id = prefix + timestamp + shortid()
+    const postfix = usePostfix ? '-' + usePostfix : ''
+    
+    const id = prefix + timestamp + shortid() + postfix
 
     onChange(id)
   }
