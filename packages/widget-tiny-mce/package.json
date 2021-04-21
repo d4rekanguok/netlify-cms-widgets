@@ -1,6 +1,6 @@
 {
   "name": "@ncwidgets/tiny-mce",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Netlify custom editor widget with TinyMCE",
   "main": "./index.js",
   "keywords": [],

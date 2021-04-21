@@ -1,13 +1,13 @@
 {
   "name": "@ncwidgets/playground",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Playground",
   "main": "index.js",
   "dependencies": {
-    "@ncwidgets/file-relation": "^0.8.0",
-    "@ncwidgets/id": "^0.8.1",
-    "@ncwidgets/reorder": "^0.8.0",
-    "@ncwidgets/tiny-mce": "^0.8.0",
+    "@ncwidgets/file-relation": "^0.9.0",
+    "@ncwidgets/id": "^0.9.0",
+    "@ncwidgets/reorder": "^0.9.0",
+    "@ncwidgets/tiny-mce": "^0.9.0",
     "netlify-cms-app": "^2.11.32",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"

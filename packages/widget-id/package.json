@@ -1,6 +1,6 @@
 {
   "name": "@ncwidgets/id",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Netlify custom widget id",
   "main": "./dist/index.js",
   "keywords": [],
