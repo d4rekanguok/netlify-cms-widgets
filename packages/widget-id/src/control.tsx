@@ -1,5 +1,5 @@
 import * as React from 'react'
-import shortid from 'shortid'
+import { nanoid } from 'nanoid'
 import { WidgetProps } from '@ncwidgets/common-typings'
 
 export class Control extends React.Component<WidgetProps> {
@@ -33,7 +33,7 @@ export class Control extends React.Component<WidgetProps> {
     const timestamp = useTimestamp ? Date.now() + '-' : ''
     const postfix = usePostfix ? '-' + usePostfix : ''
     
-    const id = prefix + timestamp + shortid() + postfix
+    const id = prefix + timestamp + nanoid() + postfix
 
     onChange(id)
   }
